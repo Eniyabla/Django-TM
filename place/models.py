@@ -150,3 +150,9 @@ class CommentForm(ModelForm):
         model = Comment
         fields = ['subject', 'comment', 'rate']
 #</editor-fold >
+#<editor-fold desc="Wishlist Model" >
+class wishist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    isLike=models.BooleanField(default=False)
+#</editor-fold>
