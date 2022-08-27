@@ -1,6 +1,7 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
 from django.db import models
+from django.forms import ModelForm, TextInput
 from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel, TreeForeignKey
 from django.urls import reverse
@@ -38,7 +39,7 @@ class Category(MPTTModel):
         return '->'.join(full_path[::-1])
 
 #</editor-fold >
-#<editor-fold desc="Place Model">
+#<editor-fold desc="Place PlaceLanguage and Image Models">
 class Place(models.Model):
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -66,4 +67,20 @@ class Place(models.Model):
 
     def get_absolute_url(self):
         return reverse('place_detail', kwargs={'slug': self.slug})
-#</editor-fold desc="Category Model">
+
+class Images(models.Model):
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    title = models.CharField(max_length=50, blank=True)
+    image = models.ImageField(blank=True, upload_to='images/')
+
+    def __str__(self):
+        return self.title
+
+
+class ImageForm(ModelForm):
+    class Meta:
+        model = Images
+        fields = ['title', 'image']
+
+
+#</editor-fold >
