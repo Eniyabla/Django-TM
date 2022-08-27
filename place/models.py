@@ -1,6 +1,8 @@
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Count, Avg
 from django.forms import ModelForm, TextInput
 from django.utils.safestring import mark_safe
 from mptt.models import MPTTModel, TreeForeignKey
@@ -71,17 +73,37 @@ class Place(models.Model):
     location = models.CharField(max_length=50, blank=True)
     create_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-
     def __str__(self):
         return self.title
-
     def image_tag(self):
         return mark_safe('<img src="{}" width="50" height="50" />'.format(self.image.url))
-
     image_tag.short_description = 'Image'
-
     def get_absolute_url(self):
         return reverse('place_detail', kwargs={'slug': self.slug})
+    def averageReview(self):
+        reviews = Comment.objects.filter(place=self).aggregate(average=Avg('rate'))
+        avg = 0
+        if reviews['average'] is not None:
+            avg = float(reviews['average'])
+        return avg
+    def countReview(self):
+        reviews = Comment.objects.filter(place=self).aggregate(count=Count('id'))
+        count = 0
+        if reviews['count'] is not None:
+            count = int(reviews['count'])
+        return count
+    def countLike(self):
+        wishlist = wishist.objects.filter(place=self).aggregate(count=Count('id'))
+        count = 0
+        if wishlist['count'] is not None:
+            count = int(wishlist['count'])
+        return count
+    def isLiked(self):
+        wishlist = wishist.objects.filter(place=self,user=settings.AUTH_USER_MODEL).aggregate(count=Count('id'))
+        count = 0
+        if wishlist['count'] is not None:
+            count = int(wishlist['count'])
+        return count
 class PlaceForm(ModelForm):
     class Meta:
         model = Place
