@@ -366,6 +366,7 @@ def user_add_place(request):
             data.description = form.cleaned_data['description']
             data.detail = form.cleaned_data['detail']
             data.city = form.cleaned_data['city']
+            data.status = form.cleaned_data['status']
             data.country = form.cleaned_data['country']
             data.location = form.cleaned_data['location']
             data.user_id = request.user.id
@@ -373,7 +374,7 @@ def user_add_place(request):
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
             messages.success(request, 'Your item has been successfully inserted.Thanks!')
-            return HttpResponseRedirect('/user/places')
+            return HttpResponseRedirect()
     category = Category.objects.all()
     setting = Setting.objects.all()
     default_language = settings.LANGUAGE_CODE[0:2]

@@ -1,15 +1,14 @@
 {% extends 'masterpage.html' %}
-
 {% load i18n %}
-{% block title %}TURMEK | {% trans "Contact Information" %}{% endblock %}
+{% block title %}TURMEK | {% trans "Contactez Nous" %}{% endblock %}
 {% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
 
 {% block content %}
     <div id="breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="/">{% trans 'Home' %}</a></li>
-                <li class="active">{% trans "Contact Us" %}</li>
+                <li><a href="{% url 'home_page' %}">{% trans 'Accueil' %}</a></li>
+                <li class="active">{% trans "Contactez Nous" %}</li>
             </ul>
         </div>
     </div>
@@ -22,12 +21,12 @@
                 <div class="col-md-4 shiping-methods">
 
                     <div class="section-title">
-                        <h3 class="title">{% trans 'Contact Form' %}</h3>
+                        <h3 class="title">{% trans 'Formulaire de contact' %}</h3>
                     </div>
                     <form id="chekout-form" class="clearfix" method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <input type="submit" class="primary-btn" value="{% trans 'Send' %}">
+                        <input type="submit" class="primary-btn" value="{% trans 'Envoyer' %}">
                     </form>
 
                 </div>
@@ -36,7 +35,7 @@
                 <div class="col-md-6">
                     <div class="shiping-methods">
                         <div class="section-title">
-                            <h3 class="title">{% trans 'Contact Information' %}</h3>
+                            <h3 class="title">{% trans 'Coordonnées' %}</h3>
                         </div>
                         {{ setting.contact|safe }}
                     </div>

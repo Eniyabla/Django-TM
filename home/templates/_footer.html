@@ -10,7 +10,7 @@
                 <div class="footer">
                     <!-- footer logo -->
                     <div class="footer-logo">
-                        <a class="logo" href="#">
+                        <a class="logo" href="{%  url 'home_page' %}">
                             {% load static %}
                             <h1><span style="color: red">TUR</span> MEK</h1>
                         </a>
@@ -32,15 +32,10 @@
             <!-- footer widget -->
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="footer">
-                    <h3 class="footer-header">My Account</h3>
+                    <h3 class="footer-header">{% trans 'Mon Compte' %}</h3>
                     <ul class="list-links" style="color: white">
                         {% if request.user.id is not None %}
-                            <li><a href="{% url 'user_index' %}"> {% trans  "My Account" %}</a></li>
-                            <li><a href="/user/wishlist"> My Wishlist</a></li>
-                            <li><a href="{% url 'user_places' %}"> {% trans "My Places" %}</a></li>
-                            <li><a href="{% url 'user_comments' %}"> {% trans "My comments" %}</a></li>
-                            <li><a href="{% url 'user_messages' %}"> {% trans "My Messages" %}</a></li>
-                            <li><a href="{% url 'logoutF' %}"> {% trans "Logout" %}</a></li>
+                            {% include 'user_panel.html' %}
                         {% endif %}
                     </ul>
                 </div>
@@ -52,13 +47,13 @@
             <!-- footer widget -->
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="footer">
-                    <h3 class="footer-header">User Service</h3>
+                    <h3 class="footer-header">{% trans "service de l'utilisateur" %}</h3>
                     <ul class="list-links">
-                        <li><a href="/">{% trans "Home" %}</a></li>
-                        <li><a href="{% url 'aboutus' %}">{% trans "About Us" %}</a></li>
-                        <li><a href="{% url 'contactus' %}">{% trans "Contact Us" %}</a></li>
+                        <li><a href="{%  url 'home_page' %}">{% trans "Accueil" %}</a></li>
+                        <li><a href="{% url 'aboutus' %}">{% trans "Apropos de nous" %}</a></li>
+                        <li><a href="{% url 'contactus' %}">{% trans "Contacter nous" %}</a></li>
                         <li><a href="{% url 'references' %}"> {% trans "References" %}</a></li>
-                        <li><a href="{% url 'faq' %}">{% trans 'FAQ' %}</a></li>
+                        <li><a href="{% url 'faq' %}">{% trans 'QUESTIONS FRÉQUEMMENT POSÉES' %}</a></li>
                     </ul>
                 </div>
             </div>
@@ -67,12 +62,10 @@
             <!-- footer subscribe -->
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="footer">
-                    <h3 class="footer-header">Contact</h3>
-                    <p>Address: {{ setting.address }}</p>
-                    <p>Phone: {{ setting.phone }}</p>
-                    <p>FAx: {{ setting.fax }}</p>
-                    <p>Email: {{ setting.email }}</p>
-
+                    <h3 class="footer-header">Coordonnées</h3>
+                    <p>Teléphone: {{ setting.phone }}</p>
+                    <p>Fax: {{ setting.fax }}</p>
+                    <p>E-mail: {{ setting.email }}</p>
                 </div>
             </div>
             <!- /footer subscribe ->
@@ -84,9 +77,8 @@
             <div class="col-md-8 col-md-offset-2 text-center">
                 <!-- footer copyright -->
                 <div class="footer-copyright">
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    Copyright &copy; 2022<!--script>document.write(new Date().getFullYear());</script--> All rights reserved | Developed by <i class="fa fa-heart-o" aria-hidden="true"></i>  <a href="https://github.com/Eniyabla/Django_TURMEK" target="_blank">Abdelbari</a>
-                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    Copyright &copy; 2022 All rights reserved | Developed by <i class="fa fa-heart-o" aria-hidden="true"></i>  <a href="https://github.com/Eniyabla/Django-TM" target="_blank" style="color: orangered">Abdelbari</a>
+
                 </div>
             </div>
             <!-- /footer copyright -->

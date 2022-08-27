@@ -34,19 +34,19 @@ urlpatterns = [
 ]
 urlpatterns += i18n_patterns(
 
-    path(_('admin/'), admin.site.urls),
-    path(_('user/'), include('user.urls')),
-    path('home/', include('home.urls')),
+    path(_('administrateur/'), admin.site.urls),
+    path(_('utilisateur/'), include('user.urls')),
+    path('accueil/', include('home.urls')),
 
     path('', include('home.urls')),
-    path(_('about/'), views.about, name='aboutus'),
-    path(_('faq/'), views.faq, name='faq'),
-    path(_('contact/'), views.contact, name='contactus'),
-    path(_('references/'), views.references, name='references'),
-    path(_('place/'), include('place.urls')),
-    path(_('search/'), views.search, name='search'),
-    path('place/<int:id>/<slug:slug>', views.place_detail, name='place_detail'),
-    path('category/<int:id>/<slug:slug>', views.category_places, name='category_places'),
+    path(_('apropos/'), views.about, name='aboutus'),
+    path(_('quest-freq-posee/'), views.faq, name='faq'),
+    path(_('contactez-nous/'), views.contact, name='contactus'),
+    path(_('références/'), views.references, name='references'),
+    path(_('produit/'), include('place.urls')),
+    path(_('rechercer/'), views.search, name='search'),
+    path('produit/<int:id>/<slug:slug>', views.place_detail, name='place_detail'),
+    path('categorie/<int:id>/<slug:slug>', views.category_places, name='category_places'),
 
     path('login/', userViews.loginForm, name='loginForm'),
     path('register/', userViews.signUpForm, name='signUpForm'),

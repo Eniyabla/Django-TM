@@ -113,6 +113,7 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 LANGUAGE_CODE = 'fr'
+LANGUAGE_CODE = 'fr'
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )

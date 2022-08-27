@@ -82,10 +82,10 @@ class ContactForm(ModelForm):
         model = ContactMessage
         fields = ['name', 'email', 'subject', 'message']
         widgets = {
-            'name': TextInput(attrs={'class': 'input', 'placeholder': 'Full Name'}),
-            'subject': TextInput(attrs={'class': 'input', 'placeholder': 'subject'}),
-            'email': TextInput(attrs={'class': 'input', 'placeholder': 'Your email'}),
-            'message': Textarea(attrs={'class': 'input', 'placeholder': 'Your Message'}),
+            'name': TextInput(attrs={'class': 'input', 'placeholder': 'Nom Complet'}),
+            'subject': TextInput(attrs={'class': 'input', 'placeholder': 'Votre sujet'}),
+            'email': TextInput(attrs={'class': 'input', 'placeholder': 'Votre e-mail'}),
+            'message': Textarea(attrs={'class': 'input', 'placeholder': 'Votre message'}),
 
         }
 #</editor-fold desc="Contact Form Model">

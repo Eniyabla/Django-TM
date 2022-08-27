@@ -7,10 +7,20 @@
       <change beforePath="$PROJECT_DIR$/TM/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/TM/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/_footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/_footer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/_header.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/_header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/_sidebar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/_slider.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/_slider.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/aboutus.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/aboutus.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/contactus.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/contactus.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/content1.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/content1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/masterpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/masterpage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/references.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/references.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/place/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/place/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/user_panel.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_panel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/user_places.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_places.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +53,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Projects/TM/home"
+    "last_opened_file_path": "C:/Projects/TM"
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [
@@ -54,6 +64,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Projects\TM\home" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Projects\TM" />
     </key>
   </component>
   <component name="RunManager">
@@ -89,7 +102,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661530578446</updated>
-      <workItem from="1661530648447" duration="19046000" />
+      <workItem from="1661530648447" duration="29239000" />
     </task>
     <servers />
   </component>

@@ -8,7 +8,7 @@
                 <!-- section-title -->
                 <div class="col-md-12">
                     <div class="section-title">
-                        <h2 class="title">{% trans 'Newest Places' %}</h2>
+                        <h2 class="title">{% trans 'les plus récents' %}</h2>
                         <div class="pull-right">
                             <div class="product-slick-dots-1 custom-dots"></div>
                         </div>
@@ -62,8 +62,8 @@
                                                     <form method="post" action="{% url  'likeplace' id=lp.id %}" class="text-right">
                                                         {% csrf_token %}
 
-                                                            <input type="hidden" name="place-id" value="{{ lp.id }}">
-                                                            {{ lp.countLike  }}&nbsp;&nbsp;<button class="main-btn icon-btn "><i class="fa fa-heart"{% for w in wishlist1 %} {% if request.user.id == w.user_id and w.place_id == lp.id %} style="color:orangered" {% endif %}{% endfor %}></i></button>
+                                                        <input type="hidden" name="place-id" value="{{ lp.id }}">
+                                                        {{ lp.countLike  }}&nbsp;&nbsp;<button class="main-btn icon-btn "><i class="fa fa-heart"{% for w in wishlist1 %} {% if request.user.id == w.user_id and w.place_id == lp.id %} style="color:orangered" {% endif %}{% endfor %}></i></button>
 
                                                     </form>
                                                 {% else %}
@@ -80,6 +80,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -91,9 +92,9 @@
                 <!-- section-title -->
                 <div class="col-md-12">
                     <div class="section-title">
-                        <h2 class="title">{% trans 'Latest Places' %}</h2>
+                        <h2 class="title">{% trans 'les plus anciens' %}</h2>
                         <div class="pull-right">
-                            <div class="product-slick-dots-1 custom-dots"></div>
+                            <div class="product-slick-dots-2 custom-dots"></div>
                         </div>
                     </div>
                 </div>
@@ -118,7 +119,7 @@
                             <!-- Product Single -->
                             {% for lp in place_latest %}
                                 <!-- Product Single -->
-                                <div class="col-md-3 col-sm-6 col-xs-6">
+                                <div class="col-md-4 col-sm-6 col-xs-6">
                                     <div class="product product-single">
                                         <div class="product-thumb">
                                             <div class="product-label">
@@ -126,10 +127,10 @@
                                                 <span class="sale">-20%</span-->
                                             </div>
                                             <a href="{% url 'place_detail' id=lp.id slug=lp.slug %}"><button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Detail</button></a>
-                                            <img src="{{ lp.image.url }}" alt="" height="200px">
+                                            <img src="{{ lp.image.url }}" alt="" height="200px" >
                                         </div>
                                         <div class="product-body">
-                                            <h3 class="product-price"><small>{{ lp.user.username }}</small></h3>
+                                            <h3 class="product-price"><small style="text-transform: capitalize">{{ lp.user.username }}</small></h3>
                                             <div class="product-rating">
                                                 <i class="fa fa-star{% if lp.averageReview < 1 %}-o empty{% endif %}"></i>
                                                 <i class="fa fa-star{% if lp.averageReview < 2 %}-o empty{% endif %}"></i>
@@ -139,10 +140,21 @@
                                                 ({{ lp.countReview  }})
                                             </div>
                                             <h2 class="product-name"><a href="#">{{ lp.title }}</a></h2>
-                                            <!--div class="product-btns text-right">
 
-                                                <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                            </div-->
+                                            <div class="product-btns text-right ">
+                                                {% if user.is_authenticated %}
+                                                    <form method="post" action="{% url  'likeplace' id=lp.id %}" class="text-right">
+                                                        {% csrf_token %}
+
+                                                        <input type="hidden" name="place-id" value="{{ lp.id }}">
+                                                        {{ lp.countLike  }}&nbsp;&nbsp;<button class="main-btn icon-btn "><i class="fa fa-heart"{% for w in wishlist1 %} {% if request.user.id == w.user_id and w.place_id == lp.id %} style="color:orangered" {% endif %}{% endfor %}></i></button>
+
+                                                    </form>
+                                                {% else %}
+                                                    {{ lp.countLike  }}&nbsp;&nbsp;<button class="main-btn icon-btn "><i class="fa fa-heart" style="color:orangered"></i></button>
+                                                {% endif %}
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -152,6 +164,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

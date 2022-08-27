@@ -1,7 +1,5 @@
-from django.shortcuts import render
 from django.conf import settings
 from django.contrib import messages
-from django.db.models import Avg, Count
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -52,13 +50,25 @@ def categoryTree(id, menu, lang):
             else:
                 menu += '\t\t\t\t <li><a href="' + reverse('category_places',args=(q.id, q.slug)) + '" >' + q.title + '</a></li>\n'
     return menu
-
-
+def wishlist_setting_category(request):
+    default_language = settings.LANGUAGE_CODE[0:2]
+    current_language = request.LANGUAGE_CODE[0:2]
+    if default_language != current_language:
+        wishlist = Place.objects.raw(
+            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
+            ' FROM place_wishist as w'
+            ' JOIN place_place as p'
+            ' ON w.place_id=p.id'
+            ' JOIN place_placelanguage as l'
+            ' ON p.id=l.place_id'
+            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
+        setting = SettingLang.objects.filter(lang=current_language)
+        category = categoryTree(0, '', current_language)
+    return wishlist,setting,category
 def index(request):
     place_newest = Place.objects.all().order_by('-id')[:10]
     place_latest = Place.objects.all().order_by('id')[:10]
     place_slider = Place.objects.all().order_by('-id')[:3]
-
     setting = Setting.objects.all()
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
@@ -70,13 +80,13 @@ def index(request):
     if default_language != current_language:
         wishlist = Place.objects.raw(
             'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
+            ' FROM place_wishist as w'
             ' JOIN place_place as p'
             ' ON w.place_id=p.id'
             ' JOIN place_placelanguage as l'
             ' ON p.id=l.place_id'
             ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '' , current_language)
+        category = categoryTree(0, '', current_language)
         category1 = Category.objects.raw('SELECT c.id,l.title,l.keyword,l.description,l.slug,c.parent_id,c.level'
                                          ' FROM place_category as c'
                                          ' INNER JOIN place_categorylanguage as l'
@@ -101,14 +111,8 @@ def index(request):
                                          ' INNER JOIN place_placelanguage as l'
                                          ' ON p.id=l.place_id'
                                          ' WHERE lang=%s ORDER BY p.create_at Asc', [current_language])
-        wishlist = Place.objects.raw('SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-                                         ' FROM home_wishist as w'
-                                         ' JOIN place_place as p'
-                                         ' ON w.place_id=p.id'
-                                         ' JOIN place_placelanguage as l'
-                                         ' ON p.id=l.place_id'
-                                         ' WHERE l.lang=%s and w.user_id=%s', [current_language,request.user.id])
-        #return HttpResponse(wishlist)
+        wishlist,setting,category = wishlist_setting_category(request)
+    #return HttpResponse(setting)
 
     context = {'category': category,
                'place_slider': place_slider,
@@ -132,16 +136,7 @@ def about(request):
     wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        setting = SettingLang.objects.filter(lang=current_language)
-        category = categoryTree(0, '', current_language)
+        wishlist,setting,category = wishlist_setting_category(request)
     context = {'setting': setting, 'category': category,'wishlist':wishlist,
                'wishlistcount':wishlistcount,
                'wishlist1':wishlist1
@@ -170,16 +165,7 @@ def contact(request):
     wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        setting = SettingLang.objects.filter(lang=current_language)
-        category = categoryTree(0, '', current_language)
+        wishlist,setting,category = wishlist_setting_category(request)
     form = ContactForm
     context = {'category': category, 'form': form, 'setting': setting,
                'wishlist':wishlist,
@@ -198,16 +184,7 @@ def references(request):
     wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        setting = SettingLang.objects.filter(lang=current_language)
-        category = categoryTree(0, '', current_language)
+        wishlist,setting,category = wishlist_setting_category(request)
     place_slider = Place.objects.all().order_by('-id')[:3]
     wishlist = wishist.objects.filter(user_id=request.user.id)
     context = {'category': category, 'setting': setting,'wishlist':wishlist,
@@ -229,16 +206,7 @@ def category_places(request, id, slug):
     wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '',current_language )
-        setting = SettingLang.objects.filter(lang=current_language)
+        wishlist,setting,category = wishlist_setting_category(request)
         try:
             category_place = Place.objects.raw(
                 ' SELECT p.id,p.image,pl.title,pl.description,pl.keyword,p.city,p.country,p.location,p.slug'
@@ -268,15 +236,7 @@ def place_detail(request, id, slug):
     wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
+        wishlist,setting,category = wishlist_setting_category(request)
         try:
             prolang = Place.objects.raw(
                 'SELECT p.id,p.image,l.title,l.description,l.detail,p.city,p.country,p.location'
@@ -316,15 +276,7 @@ def search(request):
     wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
+        wishlist,setting,category = wishlist_setting_category(request)
         category1 = CategoryLanguage.objects.filter(lang=current_language)
     if request.method == 'POST':
         form = SearchForm(request.POST)
@@ -352,14 +304,7 @@ def faq(request):
     wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
+        wishlist,setting,category = wishlist_setting_category(request)
         faqs = Faq.objects.filter(status='True', lang=default_language).order_by('ordered')
     else:
         faqs = Faq.objects.filter(status='True', lang=current_language).order_by('ordered')
