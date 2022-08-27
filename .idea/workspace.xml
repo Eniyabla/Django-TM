@@ -3,9 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="dd385956-7fe1-486c-9545-fc3795104ecf" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/place/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/place/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/place/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/place/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TM/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/TM/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TM/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/TM/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/place/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/place/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +42,8 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false"
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Projects/TM/home"
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [
@@ -44,6 +51,11 @@
     ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Projects\TM\home" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="TM" type="Python.DjangoServer" factoryName="Django server">
       <module name="TM" />
@@ -77,7 +89,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661530578446</updated>
-      <workItem from="1661530648447" duration="14474000" />
+      <workItem from="1661530648447" duration="19046000" />
     </task>
     <servers />
   </component>

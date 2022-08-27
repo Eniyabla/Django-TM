@@ -3,7 +3,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
 #<editor-fold desc="Language Model">
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, TextInput, Textarea
 
 
 class Language(models.Model):
@@ -85,7 +85,7 @@ class ContactForm(ModelForm):
             'name': TextInput(attrs={'class': 'input', 'placeholder': 'Full Name'}),
             'subject': TextInput(attrs={'class': 'input', 'placeholder': 'subject'}),
             'email': TextInput(attrs={'class': 'input', 'placeholder': 'Your email'}),
-            'message': RichTextUploadingField(),
+            'message': Textarea(attrs={'class': 'input', 'placeholder': 'Your Message'}),
 
         }
 #</editor-fold desc="Contact Form Model">

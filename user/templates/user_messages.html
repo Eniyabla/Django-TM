@@ -1,0 +1,64 @@
+{% extends 'masterpage.html' %}
+{% load i18n %}
+{% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
+{% block title %} TURMEK | {% trans 'User Messages' %}{% endblock %}
+{% block content %}
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Home' %}</a></li>
+                <li class="active">{% trans 'User Messages' %}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div class=" col-md-3">
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'User Panel' %}</h3>
+                    </div>
+                    <div class="aside">
+                        <ul class="list-links">
+                            {% include "user_panel.html" %}
+                        </ul>
+                    </div>                </div>
+                <div class="col-md-9">
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'User Messages' %}</h3>
+                    </div>
+                    <table class="shopping-cart-table table">
+                        <tr class="text-center">
+                            <th>{% trans 'Subject' %}</th>
+
+                            <th>{% trans 'Body' %}</th>
+                            <th>{% trans 'Note' %}</th>
+                            <th>{% trans 'Status' %}</th>
+                            <th>{% trans 'Action' %}</th>
+                        </tr>
+
+                        {% for mes in messages %}
+                            <tr class="text-left">
+
+                                <td class="text-left">{{ mes.subject }}</td>
+                                <td class="text-left">{{ mes.message  }}</td>
+                                <td class="text-left">{{ mes.note  }}</td>
+
+                                <td class="text-left">{{ mes.status  }}</td>
+                                <td class="text-left">
+                                    <a href="/user/delete_comment/{{ com.id }}" class="primary-btn" onclick="return confirm('{% trans 'Are you sure to delete this comment?' %}')" >{% trans 'Delete' %}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+
+{% endblock %}

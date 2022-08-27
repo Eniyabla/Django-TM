@@ -1,0 +1,78 @@
+{% extends 'masterpage.html' %}
+{% load i18n %}
+{% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
+{% block title %} TURMEK |{% trans ' User Places' %}{% endblock %}
+{% block content %}
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Home' %}</a></li>
+                <li class="active">{% trans ' User Places' %}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div class=" col-md-3">
+                    <div class="section-title">
+                        <h3 class="title">{% trans ' User Panel' %}</h3>
+                    </div>
+                    <div class="aside">
+                        <ul class="list-links">
+                            {% include "user_panel.html" %}
+                        </ul>
+                    </div>                </div>
+                <div class="col-md-9">
+                    <div class="section-title">
+                        <h3 class="title">{% trans ' User Places' %}</h3>
+                        <a href="/user/add_place"><button class="primary-btn" type="submit">{% trans 'New Place' %}</button> </a>
+                    </div>
+                    <table class="shopping-cart-table table">
+                        <tr class="text-center">
+
+                        </tr>
+                        <tr class="text-center">
+                            <th> {% trans 'Place' %}</th>
+                            <th> {% trans 'category' %}</th>
+                            <th> {% trans 'Image' %}</th>
+                            <th>{% trans 'status' %}</th>
+                            <th> {% trans 'Actions' %}</th>
+                        </tr>
+
+                        {% for place in places %}
+                            <tr class="text-left">
+                                <td class="text-left">
+                                    <a href="/place/{{ place.id }}/{{ place.slug }}">
+                                        <strong>{{ place.title }}</strong>
+                                    </a>
+                                </td>
+                                <td class="text-left">{{ place.category.title }}</td>
+                                {% if place.image %}
+                                    <td class="text-left"><img src="{{ place.image.url }}" height="40px" width="40px"/></td>
+                                {% else %}
+                                    <td class="text-left">Null</td>
+                                {% endif %}
+                                <td class="text-left">{{ place.status }}</td>
+
+                                <td class="text-left">
+                                    <a href="/user/delete_place/{{ place.id }}" class="primary-btn" onclick="return confirm('{% trans 'Are you sure to delete this item?' %}')" >{% trans 'Delete' %}</a>
+                                    <a href="/user/update_place/{{ place.id }}" class="primary-btn"  >{% trans 'Update' %}</a>
+                                    <a href="/user/add_image/{{ place.id }}" class="primary-btn"  >Gallery</a>
+                                    <a href="{% url 'user_add_place_multilang' id=place.id %}" class="primary-btn"  >MultiLang</a>
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'masterpage.html' %}
+{% load i18n %}
+{% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
+{% block title %} TURMEK | {% trans 'User Profile' %}{% endblock %}
+{% block content %}
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Home' %}</a></li>
+                <li class="active">{% trans 'User Profile' %}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div class=" col-md-3">
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'User Panel' %}</h3>
+                    </div>
+                    <div class="aside">
+                        <ul class="list-links">
+                            {% include "user_panel.html" %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'User Profile Information' %}</h3>
+                    </div>
+                    <table class="shopping-cart-table table">
+                        <tr>
+                            <th class="text-left">
+                                <a href="/user/update" class="primary-btn">{% trans 'Update Profile' %}</a>
+                                <a href="/user/password" class="primary-btn">{% trans 'Change Password' %}</a>
+                            </th>
+                            <td>{% if profile.image %}
+                                <img src="{{ profile.image.url }}" height="150px" width="150px" style="border-radius: 50%">
+                            {% endif %}
+                            </td>
+                        </tr>
+                        <tr class="text-left">
+                            <th>{% trans 'Name & Surname' %}</th>
+                            <td class="text-left">{{ profile.user.first_name }} {{ profile.user.last_name }}</td>
+                        </tr>
+                        <tr class="text-left">
+                            <th>{% trans 'Email' %}</th>
+                            <td class="text-left">{{ profile.user.email }}</td>
+                        </tr>
+                        <tr class="text-left">
+                            <th>{% trans 'Phone' %}</th>
+                            <td class="text-left">{{ profile.phone }}</td>
+                        </tr>
+                        <tr class="text-left">
+                            <th>{% trans 'City' %}</th>
+                            <td class="text-left">{{ profile.city }}</td>
+                        </tr>
+                        <tr class="text-left">
+                            <th>{% trans 'Country' %}</th>
+                            <td class="text-left">{{ profile.country }}</td>
+                        </tr>
+                        <tr class="text-left">
+                            <th>{% trans 'Address' %}</th>
+                            <td class="text-left">{{ profile.address }}</td>
+                        </tr>
+                        <tr class="text-left">
+                            <th>{% trans 'Language' %}</th>
+                            <td class="text-left">{{ profile.lang }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+
+{% endblock %}

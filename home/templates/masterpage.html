@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="descriptions" content="{% block descriptions %} TURMEK | Description{% endblock %}">
+    <meta name="keywords" content="{% block keywords %} TURMEK | Home Keywords{% endblock %}">
+    <title>{% block title %} TURMEK | Home Page{% endblock %}</title>
+    {% block header %}{% endblock %}
+    <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{% static ''%}css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="{% static ''%}css/slick.css" />
+    <link type="text/css" rel="stylesheet" href="{% static ''%}css/slick-theme.css" />
+    <link type="text/css" rel="stylesheet" href="{% static ''%}css/nouislider.min.css" />
+    <link rel="stylesheet" href="{% static ''%}css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="{% static ''%}css/style.css" />
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+{% include '_header.html' %}
+{% block sidebar %}{% endblock %}
+{% block slider %}{% endblock %}
+{% block content %}{% endblock %}
+{% include '_footer.html' %}
+</body>
+</html>

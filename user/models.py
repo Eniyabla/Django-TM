@@ -4,6 +4,9 @@ from home.models import Language
 # Create your models here.
 from django.utils.safestring import mark_safe
 #<editor-fold desc="UserProfile Model">
+from place.models import Place
+
+
 class UserProfile(models.Model):
     lang=models.ForeignKey(Language, on_delete=models.CASCADE,blank=True,null=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -23,3 +26,4 @@ class UserProfile(models.Model):
     image_tag.short_description = 'Image'
 
 #</editor-fold>
+#<editor-fold desc="Wishlist Model" >

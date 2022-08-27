@@ -1,0 +1,7 @@
+{% load i18n %}
+<li><a href="{% url 'user_index' %}"><i class="fa fa-user-o"></i> {% trans  "My Account" %}</a></li>
+<li><a href="/user/wishlist"><i class="fa fa-heart-o"></i> My Wishlist</a></li>
+<li><a href="{% url 'user_places' %}"><i class="fa fa-product-hunt"></i> {% trans "My Places" %}</a></li>
+<li><a href="{% url 'user_comments' %}"><i class="fa fa-comments-o"></i> {% trans "My comments" %}</a></li>
+<li><a href="{% url 'user_messages' %}"><i class="fa fa-comments-o"></i> {% trans "My Messages" %}</a></li>
+<li><a href="{% url 'logoutF' %}"><i class="fa fa-unlock"></i> {% trans "Logout" %}</a></li>

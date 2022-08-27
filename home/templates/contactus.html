@@ -1,0 +1,52 @@
+{% extends 'masterpage.html' %}
+
+{% load i18n %}
+{% block title %}TURMEK | {% trans "Contact Information" %}{% endblock %}
+{% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
+
+{% block content %}
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Home' %}</a></li>
+                <li class="active">{% trans "Contact Us" %}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-4 shiping-methods">
+
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'Contact Form' %}</h3>
+                    </div>
+                    <form id="chekout-form" class="clearfix" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" class="primary-btn" value="{% trans 'Send' %}">
+                    </form>
+
+                </div>
+
+
+                <div class="col-md-6">
+                    <div class="shiping-methods">
+                        <div class="section-title">
+                            <h3 class="title">{% trans 'Contact Information' %}</h3>
+                        </div>
+                        {{ setting.contact|safe }}
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+    </div>
+{% endblock %}

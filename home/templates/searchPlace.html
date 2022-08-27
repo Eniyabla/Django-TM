@@ -1,0 +1,64 @@
+{% extends 'masterpage.html' %}
+{% load i18n %}
+{% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
+{% block title %}TURMEK | {% trans 'Search Place' %}{% endblock %}
+{% block content %}
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Home' %}</a></li>
+                <li class="active">{{ query }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div id="store">
+                    <!-- row -->
+                    <div class="row">
+                        {% for cp in places %}
+                            <!-- Product Single -->
+                            <div class="col-md-3 col-sm-6 col-xs-6">
+                            <div class="product product-single">
+                                <div class="product-thumb">
+                                    <!--button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Gallery</button-->
+                                    <img src="{{ cp.image.url  }}" alt="" height="300px">
+                                </div>
+                                <div class="product-body">
+                                    <h3 class="product-price"><a href="/place/{{ cp.id }}/{{ cp.slug }}">{{ cp.title }}</a></h3>
+                                    <div>
+                                        <div class="product-rating">
+                                            <i class="fa fa-star{% if place.averageReview < 1 %}-o empty{% endif %}"></i>
+                                            <i class="fa fa-star{% if place.averageReview < 2 %}-o empty{% endif %}"></i>
+                                            <i class="fa fa-star{% if place.averageReview < 3 %}-o empty{% endif %}"></i>
+                                            <i class="fa fa-star{% if place.averageReview < 4 %}-o empty{% endif %}"></i>
+                                            <i class="fa fa-star{% if place.averageReview < 5 %}-o empty{% endif %}"></i>
+                                        </div>
+                                        <a href="#">{{ place.averageReview }} {% trans 'Review(s)' %} | {% trans 'Add Review' %}</a>
+                                        <h2 class="product-name"><a href="#">{{ cp.city}}-{{ cp.country}}</a></h2>
+                                        <div class="product-btns">
+                                            <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Product Single -->
+                        {% endfor %}
+                        <div class="clearfix visible-sm visible-xs"></div>
+
+
+                        </div>
+                        <!-- /row -->
+                    </div>
+                    </div>
+                    <div class="col-md-1"></div>
+                </div>
+                <!-- /row -->
+            </div>
+            <!-- /container -->
+        </div>
+{% endblock %}

@@ -1,0 +1,157 @@
+<div id="home">
+    {% load i18n %}
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- section-title -->
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h2 class="title">{% trans 'Newest Places' %}</h2>
+                        <div class="pull-right">
+                            <div class="product-slick-dots-1 custom-dots"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /section-title -->
+
+                <!-- banner -->
+                <!--div class="col-md-3 col-sm-6 col-xs-6">
+                    <div class="banner banner-2">
+                        <img src="{{ latest.image.url }}" alt="{{ latest.image.title }}">
+                        <div class="banner-caption">
+                            <h2 class="white-color"><br></h2>
+                            <button class="primary-btn"></button>
+                        </div>
+                    </div>
+                </div-->
+                <!-- /banner -->
+
+                <!-- Product Slick -->
+                <div class="col-md-12 col-sm-6 col-xs-6">
+                    <div class="row">
+                        <div id="product-slick-1" class="product-slick">
+                            <!-- Product Single -->
+                            {% for lp in place_newest %}
+                                <!-- Product Single -->
+                                <div class="col-md-3 col-sm-6 col-xs-6">
+                                    <div class="product product-single">
+                                        <div class="product-thumb">
+                                            <div class="product-label">
+                                                <!--span>New</span>
+                                                <span class="sale">-20%</span-->
+                                            </div>
+                                            <a href="{% url 'place_detail' id=lp.id slug=lp.slug %}"><button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Detail</button></a>
+                                            <img src="{{ lp.image.url }}" alt="" height="200px" >
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-price"><small style="text-transform: capitalize">{{ lp.user.username }}</small></h3>
+                                            <div class="product-rating">
+                                                <i class="fa fa-star{% if lp.averageReview < 1 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 2 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 3 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 4 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 5 %}-o empty{% endif %}"></i>
+                                                ({{ lp.countReview  }})
+                                            </div>
+                                            <h2 class="product-name"><a href="#">{{ lp.title }}</a></h2>
+
+                                            <div class="product-btns text-right ">
+                                                {% if user.is_authenticated %}
+                                                    <form method="post" action="{% url  'likeplace' id=lp.id %}" class="text-right">
+                                                        {% csrf_token %}
+
+                                                            <input type="hidden" name="place-id" value="{{ lp.id }}">
+                                                            {{ lp.countLike  }}&nbsp;&nbsp;<button class="main-btn icon-btn "><i class="fa fa-heart"{% for w in wishlist1 %} {% if request.user.id == w.user_id and w.place_id == lp.id %} style="color:orangered" {% endif %}{% endfor %}></i></button>
+
+                                                    </form>
+                                                {% else %}
+                                                    {{ lp.countLike  }}&nbsp;&nbsp;<button class="main-btn icon-btn "><i class="fa fa-heart" style="color:orangered"></i></button>
+                                                {% endif %}
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <!-- /Product Single -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- section-title -->
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h2 class="title">{% trans 'Latest Places' %}</h2>
+                        <div class="pull-right">
+                            <div class="product-slick-dots-1 custom-dots"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /section-title -->
+
+                <!-- banner -->
+                <!--div class="col-md-3 col-sm-6 col-xs-6">
+                    <div class="banner banner-2">
+                        <img src="{{ latest.image.url }}" alt="{{ latest.image.title }}">
+                        <div class="banner-caption">
+                            <h2 class="white-color"><br></h2>
+                            <button class="primary-btn"></button>
+                        </div>
+                    </div>
+                </div-->
+                <!-- /banner -->
+
+                <!-- Product Slick -->
+                <div class="col-md-12 col-sm-6 col-xs-6">
+                    <div class="row">
+                        <div id="product-slick-2" class="product-slick">
+                            <!-- Product Single -->
+                            {% for lp in place_latest %}
+                                <!-- Product Single -->
+                                <div class="col-md-3 col-sm-6 col-xs-6">
+                                    <div class="product product-single">
+                                        <div class="product-thumb">
+                                            <div class="product-label">
+                                                <!--span>New</span>
+                                                <span class="sale">-20%</span-->
+                                            </div>
+                                            <a href="{% url 'place_detail' id=lp.id slug=lp.slug %}"><button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Detail</button></a>
+                                            <img src="{{ lp.image.url }}" alt="" height="200px">
+                                        </div>
+                                        <div class="product-body">
+                                            <h3 class="product-price"><small>{{ lp.user.username }}</small></h3>
+                                            <div class="product-rating">
+                                                <i class="fa fa-star{% if lp.averageReview < 1 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 2 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 3 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 4 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 5 %}-o empty{% endif %}"></i>
+                                                ({{ lp.countReview  }})
+                                            </div>
+                                            <h2 class="product-name"><a href="#">{{ lp.title }}</a></h2>
+                                            <!--div class="product-btns text-right">
+
+                                                <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                                            </div-->
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <!-- /Product Single -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

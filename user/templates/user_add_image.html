@@ -1,0 +1,65 @@
+{% extends 'masterpage.html' %}
+{% load i18n %}
+{% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
+{% block title %} TURMEK |{% trans 'User Add Image' %}  {% endblock %}
+{% block content %}
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Home' %}</a></li>
+                <li><a href="{% url 'user_places' %}">{% trans 'User Places' %}</a></li>
+                <li class="active">{% trans 'Add image to :' %}{{ place.title }}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div class=" col-md-3">
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'User Panel' %}</h3>
+                    </div>
+                    <div class="aside">
+                        <ul class="list-links">
+                            {% include "user_panel.html" %}
+                        </ul>
+                    </div>                </div>
+                <div class="col-md-9">
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'Add Image to :' %} {{ place.title }}</h3>
+                    </div>
+                    <table class="shopping-cart-table table">
+
+                        <tr class="text-center">
+                            <th>{% trans 'Title' %}</th>
+                            <th>{% trans 'Image' %}</th>
+                            <th>{% trans 'Actions' %}</th>
+                        </tr>
+                        {% if images  %}
+                            {% for im in images %}
+                                <tr class="text-center">
+                                    <th>{{ im.title }}</th>
+                                    <th><img src="{{ im.image.url }}" height="50px" width="50px"/></th>
+                                    <!--th><a href="/user/delete_image/{{ place.id }}/{{ im.id }}"><button class="primary-btn" type="submit">Delete Image</button></a></th-->
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </table>
+                    <hr>
+                    <form id="chekout-form" class="clearfix" method="post"  enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="primary-btn">{% trans 'Add' %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+    </div>
+
+{% endblock %}

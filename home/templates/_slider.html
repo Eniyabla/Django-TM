@@ -1,0 +1,35 @@
+{% load static %}
+<!-- HOME -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- home wrap -->
+            <div class="home-wrap">
+                <!-- home slick -->
+
+                <div id="home-slick">
+                    <!-- banner -->
+                    {% for sl in place_slider %}
+                        <div class="banner banner-1">
+                            <img src="{{ sl.image.url }}" alt="" height="400px">
+                            <div class="banner-caption text-center">
+                                <h1 style="color: #f65306">{{ sl.title }}</h1>
+                                <h3 class="white-color font-weak" style="text-transform: uppercase">{{ sl.country }}</h3>
+                                <a href="{% url 'place_detail' id=sl.id slug=sl.slug %}"> <button class="primary-btn">Details</button></a>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <!-- /banner -->
+
+                </div>
+                <!-- /home slick -->
+            </div>
+            <!-- /home wrap -->
+        </div>
+        <!-- /container -->
+    </div>
+</div>
+<!-- /HOME -->

@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from place.models import wishist
+
 from user.models import UserProfile
+
 
 # Register your models here.
 #<editor-fold desc="userprofile Admin">
@@ -11,4 +12,5 @@ class UserProfileAdmin(admin.ModelAdmin):
 #</editor-fold
 
 admin.site.register(UserProfile, UserProfileAdmin)
+
 

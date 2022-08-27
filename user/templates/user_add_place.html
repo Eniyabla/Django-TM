@@ -1,0 +1,48 @@
+{% extends 'masterpage.html' %}
+{% load i18n %}
+{% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
+{% block title %} TURMEK | {% trans 'User Add Place' %}{% endblock %}
+{% block content %}
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Home' %}</a></li>
+                <li><a href="{% url 'user_places' %}">{% trans 'User Places' %}</a></li>
+                <li class="active">{% trans 'User Add Place' %}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div class=" col-md-3">
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'User Panel' %}</h3>
+                    </div>
+                    <div class="aside">
+                        <ul class="list-links">
+                            {% include "user_panel.html" %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'User Add Place' %}</h3>
+                    </div>
+                    <form id="chekout-form" class="clearfix" method="post"  enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="primary-btn">{% trans 'Add Place' %}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+    </div>
+
+{% endblock %}

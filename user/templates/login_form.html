@@ -1,0 +1,45 @@
+{% extends 'masterpage.html' %}
+{% load i18n %}
+{% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
+{% block title %}TURMEK |{% trans ' User login Form' %}{% endblock %}
+{% block content %}
+    <div id="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb">
+                <li><a href="/">{% trans 'Home' %}</a></li>
+                <li class="active">{% trans 'Login' %}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="shiping-methods col-md-10">
+                    <div class="section-title">
+                        <h3 class="title">{% trans 'Login Form' %} </h3>
+                    </div>
+                    <form id="chekout-form" class="clearfix" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <input class="input" type="text" placeholder="{% trans 'Enter your Username...' %}" name="username">
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="password" placeholder="{% trans 'Enter your Password...' %}" name="password">
+                        </div>
+                        <div class="form-group">
+                            <button class="primary-btn" type="submit">{% trans 'Login' %} </button>
+                        </div>
+                    </form>
+
+
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+{% endblock %}
