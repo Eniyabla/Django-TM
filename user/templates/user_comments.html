@@ -1,13 +1,13 @@
 {% extends 'masterpage.html' %}
 {% load i18n %}
 {% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
-{% block title %} TURMEK | {% trans 'User Comments' %}{% endblock %}
+{% block title %} TUR-MEK | {% trans "Commentaires de l'utilisateur" %}{% endblock %}
 {% block content %}
     <div id="breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="/">{% trans 'Home' %}</a></li>
-                <li class="active">{% trans 'User Comments' %}</li>
+                <li><a href="{% url 'home_page' %}">{% trans 'Accueil' %}</a></li>
+                <li class="active">{% trans "Commentaires de l'utilisateur" %}</li>
             </ul>
         </div>
     </div>
@@ -19,42 +19,40 @@
 
                 <div class=" col-md-3">
                     <div class="section-title">
-                        <h3 class="title">{% trans 'User Panel' %}</h3>
+                        <h3 class="title">{% trans "Panneau de l'utilisateur" %}</h3>
                     </div>
                     <div class="aside">
                         <ul class="list-links">
                             {% include "user_panel.html" %}
                         </ul>
-                    </div>                </div>
+                    </div>
+                </div>
                 <div class="col-md-9">
                     <div class="section-title">
-                        <h3 class="title">{% trans 'User Comments' %}</h3>
+                        <h3 class="title">{% trans "Commentaires de l'utilisateur" %}</h3>
                     </div>
                     <table class="shopping-cart-table table">
                         <tr class="text-center">
-                            <th>{% trans 'Place' %}</th>
-                            <th>{% trans 'Rate' %}</th>
-                            <th>{% trans 'Subject' %}</th>
-                            <th>{% trans 'Comment' %}</th>
+                            <th>{% trans 'Titre' %}</th>
+                            <th>{% trans 'Commentaire' %}</th>
                             <th>{% trans 'Status' %}</th>
-                            <th>{% trans 'Date' %}</th>
+                            <th>{% trans 'Notation' %}</th>
                             <th>{% trans 'Action(s)' %}</th>
                         </tr>
 
                         {% for com in comments %}
                             <tr class="text-left">
                                 <td class="text-left">
-                                    <a href="/place/{{ com.place_id }}/{{ com.place.slug }}">
+                                    <a href="{% url 'place_detail' id=com.place.id slug=com.place.slug %}">
                                         <strong>{{ com.place.title }}</strong>
                                     </a>
                                 </td>
-                                <td class="text-left">{{ com.rate }}</td>
-                                <td class="text-left">{{ com.subject }}</td>
+
                                 <td class="text-left">{{ com.comment }}</td>
                                 <td class="text-left">{{ com.status }}</td>
-                                <td class="text-left">{{ com.create_at }}</td>
+                                 <td class="text-left">{{ com.rate }}</td>
                                 <td class="text-left">
-                                    <a href="/user/delete_comment/{{ com.id }}" class="primary-btn" onclick="return confirm('{% trans 'Are you sure to delete this comment?' %}')" >{% trans 'Delete' %}</a>
+                                    <a href="{% url 'user_delete_comment' id=com.id %}" class="primary-btn" onclick="return confirm('{% trans 'Êtes-vous sûr de vouloir supprimer ce commentaire ?' %}')" >{% trans 'Delete' %}</a>
                                 </td>
                             </tr>
                         {% endfor %}

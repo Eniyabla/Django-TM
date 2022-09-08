@@ -1,12 +1,13 @@
 {% extends 'masterpage.html' %}
+{% load i18n %}
 {% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
-{% block title %} TURMEK | User Wishlist{% endblock %}
+{% block title %} TUR-MEK | {% trans 'List de Souhaits' %} {% endblock %}
 {% block content %}
     <div id="breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="/">Home</a></li>
-                <li class="active">User Wishlist</li>
+                <li><a href="{% url 'home_page' %}">{% trans 'Accueil' %}</a></li>
+                <li class="active">{% trans 'List de Souhaits' %}</li>
             </ul>
         </div>
     </div>
@@ -18,7 +19,7 @@
 
                 <div class=" col-md-3">
                     <div class="section-title">
-                        <h3 class="title">User Panel</h3>
+                        <h3 class="title">{% trans "Panneau de l'utilisatur" %}</h3>
                     </div>
                     <div class="aside">
                         <ul class="list-links">
@@ -28,28 +29,24 @@
                 </div>
                 <div class="col-md-9">
                     <div class="section-title">
-                        <h3 class="title">User Wishlist</h3>
+                        <h3 class="title">{% trans 'List de Souhaits' %}</h3>
                     </div>
                     <table class="shopping-cart-table table">
 
                         <tr class="text-center">
-                            <th>Title</th>
-                            <th>category</th>
-                            <th>Image</th>
+                            <th>{% trans 'Titre' %}</th>
+                            <th>{% trans 'Image' %}</th>
                         </tr>
 
                         {% for place in places %}
                             <tr class="text-left">
                                 <td class="text-left">
-                                    <a href="{% url 'place_detail' id=place.place.id slug=place.place.slug %}">
-                                        <strong>{{ place.place.title }}</strong>
+                                    <a href="{% url 'place_detail' id=place.id slug=place.slug %}">
+                                        <strong>{{ place.title }}</strong>
                                     </a>
                                 </td>
-                                <td class="text-left">{{ place.place.category.title }}</td>
-                                {% if place.place.image %}
-                                    <td class="text-left"><img src="{{ place.place.image.url }}" height="40px" width="40px"/></td>
-                                {% else %}
-                                    <td class="text-left">Null</td>
+                                {% if place.image %}
+                                    <td class="text-left"><img src="{{ place.image.url }}" height="40px" width="40px"/></td>
                                 {% endif %}
 
                             </tr>

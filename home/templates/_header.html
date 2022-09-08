@@ -7,7 +7,7 @@
     <div id="top-header">
         <div class="container">
             <div class="pull-left">
-                <span>{% trans "Welcome to TURMEK"  %}!</span>
+                <span>{% trans "Bienvenue à TUR-MEK" %}!</span>
             </div>
             <div class="pull-right">
                 <ul class="header-top-links">
@@ -76,7 +76,7 @@
                     {% if user.is_authenticated %}
                         <li class="header-cart dropdown default-dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                <div class="header-btns-icon">
+                                <div class="header-btns-icon" style="border-radius: 50%">
                                     <i class="fa fa-heart-o"  style="color:orangered"></i>
                                     <span class="qty">{{ wishlistcount }}</span>
                                 </div>
@@ -110,10 +110,8 @@
                                                     </div>
                                                     <div class="product-body" style="width: 80%">
                                                         <h3 class="product-price">{{ wi.city }}-<span class="qty">{{ wi.country }}</span></h3>
-                                                        {% if code != 'en' %}
+                                                        {% if code != 'fr' %}
                                                             <h2 class="product-name"><a href="{% url 'place_detail' id=wi.id slug=wi.slug %}">{{ wi.title }}</a></h2>
-
-
                                                         {% endif %}
                                                     </div>
 
@@ -137,7 +135,7 @@
                     <li class="header-account dropdown default-dropdown">
                         {% if user.id is not None %}
                             <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
-                                <div class="header-btns-icon" >
+                                <div class="header-btns-icon" style="border-radius: 50%" >
                                     {% if  request.session.userimage  %}
                                         <img src="{{ request.session.userimage }}" height="20px" width="20px" alt="{{ user.username }}"  />
                                     {% endif %}
@@ -149,8 +147,8 @@
                             {% include 'user_panel.html' %}
                         {% else %}
                             <li>
-                                <a href="{% url 'loginForm' %}" class="text-uppercase">{% trans "Login" %}</a> |
-                                <a href="{% url 'signUpForm' %}" class="text-uppercase">{% trans "Join" %}</a>
+                                <a href="{% url 'loginForm' %}" class="text-uppercase">{% trans "Se connecter" %}</a> |
+                                <a href="{% url 'signUpForm' %}" class="text-uppercase">{% trans "Se joindre" %}</a>
                             </li>
                         {% endif %}
                         </ul>

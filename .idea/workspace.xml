@@ -2,31 +2,47 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dd385956-7fe1-486c-9545-fc3795104ecf" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Procfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TM/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/TM/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TM/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/TM/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/home/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/Faq.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/Faq.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home/templates/_footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/_footer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home/templates/_header.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/_header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/templates/_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/_sidebar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home/templates/_slider.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/_slider.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/templates/aboutus.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/aboutus.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/templates/contactus.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/contactus.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/category_place.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/category_place.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home/templates/content1.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/content1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/templates/masterpage.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/masterpage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/templates/references.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/references.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/place_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/place_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/place/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/place/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/place/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/place/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/place/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/place/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/UserProfile.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/UserProfile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/login_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/login_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/signUp_Form.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/signUp_Form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/user_add_image.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_add_image.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/user_add_place.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_add_place.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/user_add_place_multi.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_add_place_multi.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/user_comments.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_comments.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/user_messages.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_messages.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/templates/user_panel.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_panel.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/user_password.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_password.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/templates/user_places.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_places.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/user_update.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/templates/user_wishlist.html" beforeDir="false" afterPath="$PROJECT_DIR$/user/templates/user_wishlist.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -38,6 +54,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/home/templates/_footer.html" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/home/templates/_header.html" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/home/templates/_slider.html" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/home/templates/category_place.html" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/home/templates/content1.html" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/home/templates/index.html" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/home/urls.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/home/views.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/user/forms.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/user/views.py" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -47,20 +75,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Projects/TM"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Projects/TM&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "sqlite"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Projects\TM\home" />
@@ -102,7 +130,10 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1661530578446</updated>
-      <workItem from="1661530648447" duration="29239000" />
+      <workItem from="1661530648447" duration="30353000" />
+      <workItem from="1661616835927" duration="34857000" />
+      <workItem from="1662096470662" duration="11206000" />
+      <workItem from="1662575475808" duration="12936000" />
     </task>
     <servers />
   </component>

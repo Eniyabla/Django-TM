@@ -20,13 +20,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-s9s0q&4b9(uof(!w8+q!ks__$$_4tywbtybo#2f6bac$9$yx!s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = []
+
 # Application definition
 
 INSTALLED_APPS = [
     'place.apps.PlaceConfig',
     'user.apps.UserConfig',
     'home.apps.HomeConfig',
+    'admin_interface',
+    'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'mptt',
 ]
+X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -44,6 +47,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -113,14 +117,9 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 LANGUAGE_CODE = 'fr'
-LANGUAGE_CODE = 'fr'
-LOCALE_PATHS = (
-    os.path.join(BASE_DIR, 'locale'),
-)
-
-
 TIME_ZONE = 'UTC'
 
+ALLOWED_HOSTS = ['127.0.0.1','turmek.herokuapp.com']
 USE_I18N = True
 
 USE_TZ = True
@@ -147,3 +146,9 @@ CKEDITOR_CONFIGS = {
         'toolbar': None,
     },
 }
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)

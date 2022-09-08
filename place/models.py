@@ -127,8 +127,17 @@ class PlaceLanguage(models.Model):
     slug = models.SlugField(null=False, unique=True)
     detail=RichTextUploadingField(blank=True,null=True)
     def get_absolute_url(self):
-        return reverse('placelang_detail', kwargs={'slug': self.slug})
-
+        return reverse('placelanguage_detail', kwargs={'slug': self.slug})
+class PlaceLangForm(ModelForm):
+    class Meta:
+        model = PlaceLanguage
+        fields = ['lang', 'title', 'keyword', 'description', 'detail', ]
+        widgets = {
+            'title': TextInput(attrs={'class': 'input', 'placeholder': 'titre'}),
+            'keyword': TextInput(attrs={'class': 'input', 'placeholder': 'mot-cle'}),
+            'description': TextInput(attrs={'class': 'input', 'placeholder': 'description'}),
+            'detail': TextInput(attrs={'class': 'input', 'placeholder': 'detail'}),
+        }
 class Images(models.Model):
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
     title = models.CharField(max_length=50, blank=True)

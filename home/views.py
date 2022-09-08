@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils import translation
 
 from home.forms import SearchForm
-from home.models import Setting, ContactForm, ContactMessage, Faq, SettingLang
+from home.models import Setting, ContactForm, ContactMessage, Faq, SettingLang, FaqLanguage
 from place.models import Category, Place, Images, Comment, CategoryLanguage, PlaceLanguage, wishist
 
 
@@ -48,9 +48,12 @@ def categoryTree(id, menu, lang):
                 menu += '\t\t</div>\n'
                 menu += '\t</li>\n\n'
             else:
-                menu += '\t\t\t\t <li><a href="' + reverse('category_places',args=(q.id, q.slug)) + '" >' + q.title + '</a></li>\n'
+                menu += '\t\t\t\t <li><a href="' + reverse('category_places',
+                                                           args=(q.id, q.slug)) + '" >' + q.title + '</a></li>\n'
     return menu
-def wishlist_setting_category(request):
+
+
+def wishlist_setting_category_Faq(request):
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
     if default_language != current_language:
@@ -62,20 +65,23 @@ def wishlist_setting_category(request):
             ' JOIN place_placelanguage as l'
             ' ON p.id=l.place_id'
             ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        setting = SettingLang.objects.filter(lang=current_language)
+        setting = Setting.objects.get(pk=1)
+        faqs= FaqLanguage.objects.filter(lang=current_language)
         category = categoryTree(0, '', current_language)
-    return wishlist,setting,category
+    return wishlist, setting, category,faqs
+
+
 def index(request):
     place_newest = Place.objects.all().order_by('-id')[:10]
     place_latest = Place.objects.all().order_by('id')[:10]
     place_slider = Place.objects.all().order_by('-id')[:3]
-    setting = Setting.objects.all()
+    setting = Setting.objects.get(pk=1)
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
     category = categoryTree(0, '', default_language)
     category1 = Category.objects.all()
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
     if default_language != current_language:
         wishlist = Place.objects.raw(
@@ -93,53 +99,59 @@ def index(request):
                                          ' ON c.id=l.category_id'
                                          ' WHERE lang=%s ORDER BY c.id', [current_language])
         setting = SettingLang.objects.filter(lang=current_language)
-        place_slider=Place.objects.raw(' SELECT p.id as id,p.image,l.title,l.description,l.detail,p.city,p.country,p.location'
-                                       ' FROM place_place as p'
-                                       ' INNER JOIN place_placelanguage as l'
-                                       ' ON p.id=l.place_id'
-                                       ' WHERE  l.lang=%s', [current_language])
+        place_slider = Place.objects.raw(
+            ' SELECT p.id as id,p.image,l.title,l.description,l.detail,p.city,p.country,p.location'
+            ' FROM place_place as p'
+            ' INNER JOIN place_placelanguage as l'
+            ' ON p.id=l.place_id'
+            ' WHERE  l.lang=%s', [current_language])
 
+        place_newest = Place.objects.raw(
+            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
+            ' FROM place_place as p'
+            ' INNER JOIN place_placelanguage as l'
+            ' ON p.id=l.place_id'
+            ' WHERE lang=%s ORDER BY p.create_at Desc', [current_language])
 
-        place_newest =Place.objects.raw('SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-                                         ' FROM place_place as p'
-                                         ' INNER JOIN place_placelanguage as l'
-                                         ' ON p.id=l.place_id'
-                                         ' WHERE lang=%s ORDER BY p.create_at Desc', [current_language])
+        place_latest = Place.objects.raw(
+            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
+            ' FROM place_place as p'
+            ' INNER JOIN place_placelanguage as l'
+            ' ON p.id=l.place_id'
+            ' WHERE lang=%s ORDER BY p.create_at Asc', [current_language])
+        wishlist, setting, category,faqs= wishlist_setting_category_Faq(request)
 
-        place_latest =Place.objects.raw('SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-                                         ' FROM place_place as p'
-                                         ' INNER JOIN place_placelanguage as l'
-                                         ' ON p.id=l.place_id'
-                                         ' WHERE lang=%s ORDER BY p.create_at Asc', [current_language])
-        wishlist,setting,category = wishlist_setting_category(request)
-    #return HttpResponse(setting)
 
     context = {'category': category,
                'place_slider': place_slider,
                'place_newest': place_newest,
                'place_latest': place_latest,
-               'category1':category1,
+               'category1': category1,
                'setting': setting,
-               'wishlist':wishlist,
-               'wishlistcount':wishlistcount,
-               'wishlist1':wishlist1
+               'wishlist': wishlist,
+               'wishlistcount': wishlistcount,
+               'wishlist1': wishlist,
+               'faqs':faqs,
                }
     return render(request, 'index.html', context)
 
 
 def about(request):
-    setting = Setting.objects.get(pk=1)
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
-    category =categoryTree(0,'',default_language)
+    setting = Setting.objects.get(pk=1)
+    category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist,setting,category = wishlist_setting_category(request)
-    context = {'setting': setting, 'category': category,'wishlist':wishlist,
-               'wishlistcount':wishlistcount,
-               'wishlist1':wishlist1
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
+    context = {'setting': setting, 'category': category, 'wishlist': wishlist,
+               'wishlistcount': wishlistcount,
+               'wishlist1': wishlist,
+               'faqs':faqs,
                }
     return render(request, 'aboutus.html', context)
 
@@ -156,87 +168,101 @@ def contact(request):
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
             messages.success(request, 'Your message has been successfully sent.Thanks!')
-            return HttpResponseRedirect('/contact')
-    setting = Setting.objects.get(pk=1)
+            return HttpResponseRedirect(reverse('contactez-nous'))
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs = Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist,setting,category = wishlist_setting_category(request)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
     form = ContactForm
-    context = {'category': category, 'form': form, 'setting': setting,
-               'wishlist':wishlist,
-               'wishlistcount':wishlistcount,
-               'wishlist1':wishlist1
+    context = {'category': category,
+               'form': form,
+               'setting': setting,
+               'faqs':faqs,
+               'wishlist1':wishlist,
+               'wishlist': wishlist,
+               'wishlistcount': wishlistcount,
                }
     return render(request, 'contactus.html', context)
 
 
 def references(request):
-    setting = Setting.objects.get(pk=1)
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs = Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist,setting,category = wishlist_setting_category(request)
-    place_slider = Place.objects.all().order_by('-id')[:3]
-    wishlist = wishist.objects.filter(user_id=request.user.id)
-    context = {'category': category, 'setting': setting,'wishlist':wishlist,
-               'wishlistcount':wishlistcount,
-               'wishlist1':wishlist1}
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+    context = {'category': category,
+               'setting': setting,
+               'wishlist': wishlist,
+               'wishlist1':wishlist,
+               'wishlistcount': wishlistcount,
+               'faqs':faqs
+               }
 
     return render(request, 'references.html', context)
 
 
 def category_places(request, id, slug):
-    setting = Setting.objects.get(pk=1)
-    category = Category.objects.all()
+
     category_place = Place.objects.filter(category_id=id)
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
-    place_slider = Place.objects.all().order_by('-id')[:3]
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs = Faq.objects.filter(status=True).order_by('ordered')
+    wishlist1 = wishist.objects.filter(user_id=request.user.id)
+    title=Category.objects.filter(id=id).title
     if default_language != current_language:
-        wishlist,setting,category = wishlist_setting_category(request)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+        title = CategoryLanguage.objects.get(category_id=id, lang=current_language).title
         try:
             category_place = Place.objects.raw(
                 ' SELECT p.id,p.image,pl.title,pl.description,pl.keyword,p.city,p.country,p.location,p.slug'
                 ' FROM place_place AS p'
                 ' LEFT JOIN place_placelanguage AS pl'
                 ' ON p.id=pl.place_id'
-                ' WHERE  p.category_id=%s AND pl.lang=%s', [id,current_language])
+                ' WHERE  p.category_id=%s AND pl.lang=%s', [id, current_language])
 
         except:
             pass
 
-    title = CategoryLanguage.objects.get(category_id=id,lang=current_language).title
-    context = {'setting': setting, 'category': category, 'category_place': category_place, 'title': title,'wishlist':wishlist,
-               'wishlistcount':wishlistcount,
-               'wishlist1':wishlist1}
+    context = {'setting': setting,
+               'category': category,
+               'category_place': category_place,
+               'title': title,
+               'wishlist': wishlist,
+               'wishlistcount': wishlistcount,
+               'wishlist1': wishlist,
+               'faqs':faqs,
+               }
     # return HttpResponse(places)
     return render(request, 'category_place.html', context)
 
 
 def place_detail(request, id, slug):
     query = request.GET.get('q')
+    place = Place.objects.get(pk=id)
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
-    category = categoryTree(0,'',default_language)
-    place = Place.objects.get(pk=id)
+    setting = Setting.objects.get(pk=1)
+    category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs = Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist,setting,category = wishlist_setting_category(request)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
         try:
             prolang = Place.objects.raw(
                 'SELECT p.id,p.image,l.title,l.description,l.detail,p.city,p.country,p.location'
@@ -247,21 +273,18 @@ def place_detail(request, id, slug):
             place = prolang[0]
         except:
             pass
-
-
-    setting = Setting.objects.get(pk=1)
     comments = Comment.objects.filter(place_id=id)
     images = Images.objects.filter(place_id=id)
-    wishlist = wishist.objects.filter(user_id=request.user.id)
     context = {
         'setting': setting,
         'place': place,
         'images': images,
         'category': category,
         'comments': comments,
-        'wishlist':wishlist,
-               'wishlistcount':wishlistcount,
-               'wishlist1':wishlist1
+        'wishlist': wishlist,
+        'wishlistcount': wishlistcount,
+        'wishlist1': wishlist,
+        'faqs':faqs
     }
 
     return render(request, 'place_detail.html', context)
@@ -269,15 +292,15 @@ def place_detail(request, id, slug):
 
 def search(request):
     default_language = settings.LANGUAGE_CODE[0:2]
+    default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
-    category1 = Category.objects.all()
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs = Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist,setting,category = wishlist_setting_category(request)
-        category1 = CategoryLanguage.objects.filter(lang=current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
@@ -287,40 +310,40 @@ def search(request):
                 places = Place.objects.filter(title__icontains=query)
             else:
                 places = Place.objects.filter(title__icontains=query, category_id=catid)
-            #category = Category.objects.all()
-            context = {'category': category,'category1': category1, 'places': places, 'query': query,'wishlist':wishlist,
-               'wishlistcount':wishlistcount,
-               'wishlist1':wishlist1 }
+            # category = Category.objects.all()
+            context = {'category': category , 'places': places, 'query': query,
+                       'wishlist': wishlist,
+                       'wishlistcount': wishlistcount,
+                       'wishlist1': wishlist,
+                       'faqs':faqs,
+                       }
             return render(request, 'searchPlace.html', context)
-    return HttpResponseRedirect('/'+current_language)
+    return HttpResponseRedirect('/' + current_language)
 
 
 def faq(request):
-    setting = Setting.objects.get(pk=1)
-    category = Category.objects.all()
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
+    category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
+    faqs = Faq.objects.filter(status=True).order_by('orderd')
     wishlistcount = wishlist.count()
     if default_language != current_language:
-        wishlist,setting,category = wishlist_setting_category(request)
-        faqs = Faq.objects.filter(status='True', lang=default_language).order_by('ordered')
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
     else:
-        faqs = Faq.objects.filter(status='True', lang=current_language).order_by('ordered')
-    # f_id = faqs.get(pk=1).ordered
+        faqs = Faq.objects.filter(status='True').order_by('ordered')
     context = {'setting': setting,
                'category': category,
                'faqs': faqs,
-                'wishlist':wishlist,
-               'wishlistcount':wishlistcount,
-               'wishlist1':wishlist1
+               'wishlist': wishlist,
+               'wishlistcount': wishlistcount,
+               'wishlist1': wishlist
                }
     return render(request, 'Faq.html', context)
 
 
 def selectLanguage(request):
-
     if request.method == 'POST':
         url = request.META.get('HTTP_REFERER')
         user_language = translation.get_language()
@@ -329,4 +352,7 @@ def selectLanguage(request):
         translation.activate(lang)
         response = HttpResponse(lang)
         response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang)
-        return HttpResponseRedirect("/" + lang)
+        default_language = settings.LANGUAGE_CODE[0:2]
+        if lang == default_language:
+            return HttpResponseRedirect("/")
+        return HttpResponseRedirect('/' + lang)

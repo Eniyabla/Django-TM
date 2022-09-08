@@ -1,14 +1,14 @@
 {% extends 'masterpage.html' %}
 {% load i18n %}
 {% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
-{% block title %} TURMEK |{{ place.title}}{% trans 'place Language' %}  {% endblock %}
+{% block title %} TUR-MEK |{% trans 'la version Arabe de' %} {{ place.title}}  {% endblock %}
 {% block content %}
     <div id="breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="/">{% trans 'Home' %}</a></li>
-                <li><a href="{% url 'user_places' %}">{% trans 'User Places' %}</a></li>
-                <li class="active">{{ place.title}}{% trans 'place Language ' %}</li>
+                <li><a href="{% url 'home_page' %}">{% trans 'Accueil' %}</a></li>
+                <li><a href="{% url 'user_places' %}">{% trans "Produit de l'utilisateur" %}</a></li>
+                <li class="active">{% trans 'La version arabe de ' %}{{ place.title}}</li>
             </ul>
         </div>
     </div>
@@ -20,7 +20,7 @@
 
                 <div class=" col-md-3">
                     <div class="section-title">
-                        <h3 class="title">{% trans 'User Panel' %}</h3>
+                        <h3 class="title">{% trans "Panneau de l'utilisateur" %}</h3>
                     </div>
                     <div class="aside">
                         <ul class="list-links">
@@ -30,14 +30,14 @@
                 </div>
                 <div class="col-md-9">
                     <div class="section-title">
-                        <h3 class="title">{{place.title}} {% trans ' place Language' %}</h3>
+                        <h3 class="title">{% trans 'La version arabe de ' %}{{ place.title}}</h3>
                     </div>
                     <table class="shopping-cart-table table">
 
                         <tr class="text-center">
-                            <th> {% trans 'Title' %}</th>
-                            <th>{% trans 'Language' %}</th>
-                            <th>{% trans 'Keyword' %}</th>
+                            <th> {% trans 'Titre' %}</th>
+                            <th>{% trans 'Langue' %}</th>
+                            <th>{% trans 'Mot-clé' %}</th>
                             <th>{% trans 'Description' %}</th>
                             <th>{% trans 'Action' %}</th>
                         </tr>
@@ -46,10 +46,10 @@
                             <td class="text-left">
                                 <strong>{{ place.title }}</strong>
                             </td>
-                            <td class="text-left">en</td>
+                            <td class="text-left">fr</td>
                             <td class="text-left">{{ place.keyword }}</td>
                             <td class="text-left">{{ place.description }}</td>
-                            <td class="text-left">{% trans 'default Place' %}</td>
+                            <td class="text-left">{% trans 'Par defaut' %}</td>
                         </tr>
                         {% for pl in places %}
                             < <tr>
@@ -60,7 +60,7 @@
                             <td class="text-left">{{ pl.lang }}</td>
                             <td class="text-left">{{ pl.keyword }}</td>
                             <td class="text-left">{{ pl.description }}</td>
-                            <td class="text-left"><a href="/user/update_multilang_place/{{ place.id }}/{{ pl.id }}" class="primary-btn"  >{% trans 'Update' %}</a></td>
+                            <td class="text-left"><a href="{% url 'user_update_multilang_place' place_id=place.id id=pl.id %}" class="primary-btn"  >{% trans 'Modifier' %}</a></td>
                         </tr>
                         {% endfor %}
                     </table>
@@ -69,8 +69,8 @@
                         {% if placecount < langcount  %}
                         <form id="chekout-form" class="clearfix" method="post">
                             {% csrf_token %}
-                            {{ form1.as_p }}
-                            <button type="submit" class="primary-btn">{% trans 'Add Multi language Place ' %}</button>
+                            {{ form.as_p }}
+                            <button type="submit" class="primary-btn">{% trans 'Ajouter la version arabe' %}</button>
                         </form>
                         {% endif %}
 

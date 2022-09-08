@@ -68,17 +68,18 @@
                                                 <h3 class="product-price">{{ place.city }}-{{ place.country }}</h3>
                                                 <div>
                                                     <div class="product-rating">
-                                                        <i class="fa fa-star{% if place.averageReview < 1 %}-o empty{% endif %}"></i>
-                                                        <i class="fa fa-star{% if place.averageReview < 2 %}-o empty{% endif %}"></i>
-                                                        <i class="fa fa-star{% if place.averageReview < 3 %}-o empty{% endif %}"></i>
-                                                        <i class="fa fa-star{% if place.averageReview < 4 %}-o empty{% endif %}"></i>
-                                                        <i class="fa fa-star{% if place.averageReview < 5 %}-o empty{% endif %}"></i>
+                                                        <i class="fa fa-star{% if place.averageReview < 1 and place.averageReview >= 0.5 %}-half{% elif place.averageReview < 0.5 %}-o empty{% endif %}" ></i>
+                                                        <i class="fa fa-star{% if place.averageReview < 2 and place.averageReview >= 1.5 %}-half{% elif place.averageReview < 1.5 %}-o empty{% endif %}" ></i>
+                                                        <i class="fa fa-star{% if place.averageReview < 3 and place.averageReview >= 2.5 %}-half{% elif place.averageReview < 2.5 %}-o empty{% endif %}" ></i>
+                                                        <i class="fa fa-star{% if place.averageReview < 4 and place.averageReview >= 3.5 %}-half{% elif place.averageReview < 3.5 %}-o empty{% endif %}"></i>
+                                                        <i class="fa fa-star{% if place.averageReview < 5 and place.averageReview >= 4.5 %}-half{% elif place.averageReview < 4.5 %}-o empty{% endif %}"></i>
+                                                        {{ place.averageReview  }}
                                                     </div>
-                                                    <a href="#">{{ place.averageReview }} {% trans 'Review(s)' %} | {% trans 'Add Review' %}</a>
+                                                    <a href="#review">{{ place.countReview  }} {% trans 'Review(s)' %} | {% trans 'Add Review' %}</a>
                                                 </div>
 
-                                                <p><strong>{% trans 'City' %}:</strong>{{ place.city }}</p>
-                                                <p><strong>{% trans 'Country' %}:</strong> {{ place.country }}</p>
+                                                <p><strong>{% trans 'Ville' %}:</strong>{{ place.city }}</p>
+                                                <p><strong>{% trans 'Pays' %}:</strong> {{ place.country }}</p>
                                                 <p><strong>{% trans 'Location' %}:</strong>{{ place.location }}</p>
                                                 <!--p><strong>{% trans 'Description' %}</strong><br>{{ place.description }}</p-->
 
@@ -97,7 +98,7 @@
                                             <ul class="tab-nav">
                                                 <li class="active"><a data-toggle="tab" href="#tab1">{% trans 'Description' %}</a></li>
                                                 <li><a data-toggle="tab" href="#tab3">{% trans 'Details' %}</a></li>
-                                                <li><a data-toggle="tab" href="#tab2">{% trans 'Reviews' %} ({{ place.countReview }})</a></li>
+                                                <li><a data-toggle="tab" id="review" href="#tab2">{% trans 'Reviews' %} ({{ place.countReview }})</a></li>
                                             </ul>
                                             <div class="tab-content">
                                                 <div id="tab1" class="tab-pane fade in">
@@ -114,7 +115,7 @@
                                                                 {% for comment in comments %}
                                                                     <div class="single-review">
                                                                         <div class="review-heading">
-                                                                            <div><a href="#"><i class="fa fa-user-o"></i> {{ comment.user }}</a> | <b>{{ comment.subject }}</b></div>
+                                                                            <div><a href="#"><i class="fa fa-user-o"></i> {{ comment.user }}</a> </div>
                                                                             <div><a href="#"><i class="fa fa-clock-o"></i>{{ comment.create_at }} </a></div>
                                                                             <div class="review-rating pull-right">
                                                                                 <i class="fa fa-star{% if comment.rate < 1 %}-o empty{% endif %}"></i>
@@ -141,7 +142,7 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <h4 class="text-uppercase">{% trans 'Give Your Review' %}</h4>
-                                                            <form method="post" action="/place/ratePlace/{{ place.id }}/" class="review-form">
+                                                            <form method="post" action="{% url 'ratePlace' id=place.id %}" class="review-form">
                                                                 {% csrf_token %}
 
                                                                 <div class="form-group">

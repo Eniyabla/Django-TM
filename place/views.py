@@ -1,3 +1,5 @@
+from audioop import reverse
+
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Avg, Count
@@ -6,7 +8,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from home.models import Setting
-from place.models import CommentForm, Category, Comment
+from place.models import CommentForm, Category, Comment, Place
 
 
 def place(request):
@@ -29,7 +31,7 @@ def ratePlace(request, id):
             data.save()
             messages.success(request, 'Your review has been succesfully sent!')
             return HttpResponseRedirect(url)
-    return HttpResponseRedirect('ratePlace')
+    return HttpResponseRedirect(url)
 
 
 

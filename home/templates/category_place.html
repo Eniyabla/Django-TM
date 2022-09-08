@@ -1,13 +1,13 @@
 {% extends 'masterpage.html' %}
 {% load i18n %}
 {% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
-{% block title %} TURMEK | {{ title }}{% endblock %}
+{% block title %} TURMEK | {% trans 'categorie' %} {{ title }} {% endblock %}
 {% block content %}
     <div id="breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="/">{% trans 'Home' %}</a></li>
-                <li class="active">{{ title }}</li>
+                <li><a href="{% url 'home_page' %}">{% trans 'Accueil' %}</a></li>
+                <li class="active">{% trans 'categorie' %} {{ title }}</li>
             </ul>
         </div>
     </div>
@@ -16,8 +16,8 @@
         <div class="container">
             <!-- row -->
             <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
+                <div class="col-md-3"></div>
+                <div class="col-md-9">
                     <div class="section-title">
                         <h3 class="title">{{ title }}</h3>
                     </div>
@@ -26,8 +26,7 @@
                             <th>{% trans 'Place' %}</th>
                             <th>{% trans 'Image' %}</th>
                             <th>{% trans 'status' %}</th>
-                            <th>{% trans 'Date' %}</th>
-                            <th>{% trans 'Action' %}</th>
+                            <th></th>
                         </tr>
 
                         {% for c_p in category_place %}
@@ -37,15 +36,13 @@
                                 </td>
                                 <td class="text-left"><img src="{{ c_p.image.url }}" height="30px" width="30px"></td>
                                 <td class="text-left">{{ c_p.status }}</td>
-                                <td class="text-left">{{ c_p.create_at }}</td>
                                 <td class="text-left">
-                                    <a href="{% url 'place_detail' id=c_p.id slug=c_p.slug %}" class="primary-btn">Detail</a>
+                                    <a href="{% url 'place_detail' id=c_p.id slug=c_p.slug %}" class="primary-btn">{% trans 'Details' %}</a>
                                 </td>
                             </tr>
                         {% endfor %}
                     </table>
                 </div>
-                <div class="col-md-1"></div>
             </div>
             <!-- /row -->
         </div>

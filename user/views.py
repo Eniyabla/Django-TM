@@ -3,38 +3,33 @@ from django.contrib.auth import logout, authenticate, login, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.shortcuts import render
 # Create your views here.
 from TM import settings
-from home.models import Setting, ContactMessage, SettingLang
+from home.models import Setting, ContactMessage, SettingLang,Language,Faq
 from home.views import categoryTree
-from place.models import Category, Comment, Images, Place, PlaceForm, ImageForm,  PlaceLanguage,wishist
+from place.models import Category, Comment, Images, Place, PlaceForm, ImageForm,  PlaceLanguage,wishist,PlaceLangForm
 
-from user.forms import SignUpForm, UserUpdateForm, ProfileUpdateForm, PlaceUpdateForm
+from user.forms import SignUpForm, UserUpdateForm, ProfileUpdateForm, PlaceUpdateForm,PlaceLangUpdateForm
 from user.models import UserProfile
+from home.views import wishlist_setting_category_Faq
 
 
 @login_required(login_url='/login')
 def index(request):
-    category = Category.objects.all()
-    setting = Setting.objects.all()
+    place_slider = Place.objects.all().order_by('-id')[:3]
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
-    place_slider = Place.objects.all().order_by('-id')[:3]
+    setting = Setting.objects.get(pk=1)
+    category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
-        setting = SettingLang.objects.filter(lang=current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
     current_user = request.user
     profile = UserProfile.objects.get(user_id=current_user.id)
     context = {
@@ -42,30 +37,23 @@ def index(request):
         'profile': profile,
         'wishlist': wishlist,
         'wishlistcount': wishlistcount,
-        'wishlist1': wishlist1
+        'wishlist1': wishlist,
+        'faqs':faqs,
     }
     return render(request, 'UserProfile.html', context)
 
 
 def loginForm(request):
-    setting = Setting.objects.get(pk=1)
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
-    place_slider = Place.objects.all().order_by('-id')[:3]
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -78,36 +66,31 @@ def loginForm(request):
             return HttpResponseRedirect('/')
         else:
             messages.warning(request, 'Wrong username or password, try again')
-            return HttpResponseRedirect('/login')
+            return HttpResponseRedirect(reverse('loginF'))
     context = {
         'setting': setting,
         'category': category,
         'wishlist': wishlist,
         'wishlistcount': wishlistcount,
-        'wishlist1': wishlist1
+        'wishlist1': wishlist,
+        'faqs':faqs,
     }
 
     return render(request, 'login_form.html', context)
 
 
 def signUpForm(request):
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
-    place_slider = Place.objects.all().order_by('-id')[:3]
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
@@ -133,30 +116,24 @@ def signUpForm(request):
         'form': form,
         'wishlist': wishlist,
         'wishlistcount': wishlistcount,
-        'wishlist1': wishlist1
+        'wishlist1': wishlist,
+        'faqs':faqs,
     }
     return render(request, 'signUp_Form.html', context)
 
 
 @login_required(login_url='/login')
 def user_update(request):
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
-    place_slider = Place.objects.all().order_by('-id')[:3]
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.userprofile)
@@ -164,7 +141,7 @@ def user_update(request):
             user_form.save()
             profile_form.save()
             messages.success(request, 'Your account has been succesfully updated')
-            return HttpResponseRedirect('/user')
+            return HttpResponseRedirect(reverse('user_index'))
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.userprofile)
@@ -174,40 +151,34 @@ def user_update(request):
             'profile_form': profile_form,
             'wishlist': wishlist,
             'wishlistcount': wishlistcount,
-            'wishlist1': wishlist1
+            'wishlist1': wishlist,
+            'fqas':faqs,
         }
         return render(request, 'user_update.html', context)
 
 
 @login_required(login_url='/login')
 def user_password(request):
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
-    place_slider = Place.objects.all().order_by('-id')[:3]
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
             messages.success(request, 'Your account has been succesfully updated')
-            return HttpResponseRedirect('/user')
+            return HttpResponseRedirect(reverse('user_index'))
         else:
             messages.success(request, 'Wrong:' + str(form.errors))
-            return HttpResponseRedirect('/user/password')
+            return HttpResponseRedirect(reverse('password_user'))
     else:
 
         form = PasswordChangeForm(request.user)
@@ -216,7 +187,8 @@ def user_password(request):
             'form': form,
             'wishlist': wishlist,
             'wishlistcount': wishlistcount,
-            'wishlist1': wishlist1
+            'wishlist1': wishlist,
+            'faqs':faqs,
         }
         return render(request, 'user_password.html', context)
 
@@ -225,95 +197,77 @@ def user_password(request):
 def user_comments(request):
     curr_user = request.user
     comments = Comment.objects.filter(user_id=curr_user.id)
-    wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
-    wishlistcount = wishlist.count()
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
-    category=categoryTree(0,'',default_language)
+    setting = Setting.objects.get(pk=1)
+    category = categoryTree(0, '', default_language)
+    wishlist = wishist.objects.filter(user_id=request.user.id)
+    wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category=categoryTree(0,'',current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
     context = {
         'category': category,
         'comments': comments,
         'wishlist': wishlist,
         'wishlistcount': wishlistcount,
-        'wishlist1': wishlist1
+        'wishlist1': wishlist,
+        'faqs':faqs,
     }
     return render(request, 'user_comments.html', context)
 
 
 @login_required(login_url='/login')
 def user_places(request):
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
-    place_slider = Place.objects.all().order_by('-id')[:3]
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
+    places=Place.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
-    places = Place.objects.filter(user_id=request.user.id)
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
         places=Place.objects.raw('SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-                                         ' FROM place_place as p'
-                                         ' INNER JOIN place_placelanguage as l'
-                                         ' ON p.id=l.place_id'
-                                         ' WHERE lang=%s', [current_language])
-    # curr_user = request.user
-
+                                 ' FROM place_place as p'
+                                 ' INNER JOIN place_placelanguage as l'
+                                 ' ON p.id=l.place_id'
+                                 )
+    places = Place.objects.filter(user_id=request.user.id)
     context = {
         'category': category,
         'places': places,
         'wishlist': wishlist,
         'wishlistcount': wishlistcount,
-        'wishlist1': wishlist1
+        'wishlist1': wishlist,
+        'faqs':faqs,
     }
     return render(request, 'user_places.html', context)
 
 
 @login_required(login_url='/login')
 def user_wishlist(request):
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
-        setting = SettingLang.objects.filter(lang=current_language)
-    places = wishist.objects.filter(user_id=request.user.id)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
     context = {
         'category': category,
-        'places': places,
+        'places': wishlist,
         'wishlist': wishlist,
         'wishlistcount': wishlistcount,
-        'wishlist1': wishlist1
+        'wishlist1': wishlist,
+        'faqs':faqs,
     }
     return render(request, 'user_wishlist.html', context)
 
@@ -323,8 +277,17 @@ def user_delete_comment(request, id):
     category = Category.objects.all()
     curr_user = request.user
     comments = Comment.objects.filter(id=id, user_id=curr_user.id).delete()
-    messages.success(request, 'comment is deleted')
-    return HttpResponseRedirect('/user/comments')
+    #messages.success(request, 'comment is deleted')
+    return HttpResponseRedirect(reverse('user_comments'))
+
+@login_required(login_url='/login')
+def user_delete_message(request, id):
+    category = Category.objects.all()
+    curr_user = request.user
+    comments = ContactMessage.objects.filter(id=id).delete()
+    #messages.success(request, 'comment is deleted')
+    return HttpResponseRedirect(reverse('user_messages'))
+
 
 
 @login_required(login_url='/login')
@@ -338,7 +301,7 @@ def user_delete_place(request, id):
     if default_language != current_language:
         wishlist = Place.objects.raw(
             'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
+            ' FROM place_wishist as w'
             ' JOIN place_place as p'
             ' ON w.place_id=p.id'
             ' JOIN place_placelanguage as l'
@@ -349,7 +312,7 @@ def user_delete_place(request, id):
     curr_user = request.user
     places = Place.objects.filter(id=id, user_id=curr_user.id).delete()
     messages.success(request, 'place is deleted')
-    return HttpResponseRedirect('/user/places')
+    return HttpResponseRedirect(reverse('user_places'))
 
 
 from django.utils.text import slugify
@@ -374,56 +337,40 @@ def user_add_place(request):
             data.ip = request.META.get('REMOTE_ADDR')
             data.save()
             messages.success(request, 'Your item has been successfully inserted.Thanks!')
-            return HttpResponseRedirect()
-    category = Category.objects.all()
-    setting = Setting.objects.all()
+            return HttpResponseRedirect(reverse('user_places'))
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
-    place_slider = Place.objects.all().order_by('-id')[:3]
+    setting = Setting.objects.get(pk=1)
+    category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
-        setting = SettingLang.objects.filter(lang=current_language)
-    # setting = Setting.objects.get(pk=1)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
     form = PlaceForm
     form1 = ImageForm
     category = Category.objects.all()
     context = {'category': category, 'form': form, 'form1': form1, 'setting': setting,'wishlist':wishlist,
                'wishlistcount':wishlistcount,
-               'wishlist1':wishlist1}
+               'wishlist1':wishlist,
+               'faqs':faqs,
+               }
 
     return render(request, 'user_add_place.html', context)
 
-
+#PlaceLangUpdateForm
 @login_required(login_url='/login')
 def user_update_place(request, id):
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
-    place_slider = Place.objects.all().order_by('-id')[:3]
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
     if request.method == 'POST':
         place = Place.objects.get(id=id)
         user_form = PlaceUpdateForm(request.POST, request.FILES, instance=place)
@@ -432,7 +379,7 @@ def user_update_place(request, id):
             user_form.save()
             # profile_form.save()
             messages.success(request, 'Your item has been succesfully updated')
-            return HttpResponseRedirect('/user/places')
+            return HttpResponseRedirect(reverse('user_places'))
     else:
         place = Place.objects.get(id=id)
         user_form = PlaceUpdateForm(instance=place)
@@ -442,7 +389,8 @@ def user_update_place(request, id):
             'user_form': user_form,
             'wishlist': wishlist,
             'wishlistcount': wishlistcount,
-            'wishlist1': wishlist1
+            'wishlist1': wishlist,
+            'faqs':faqs,
         }
         return render(request, 'user_update_place.html', context)
 
@@ -462,25 +410,17 @@ def user_add_image(request, id):
                 data.save()
             messages.success(request, 'Your image has been successfully inserted.Thanks!')
             return HttpResponseRedirect(url)
-    setting = Setting.objects.all()
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
-    place_slider = Place.objects.all().order_by('-id')[:3]
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
-        setting = SettingLang.objects.filter(lang=current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
 
     place = Place.objects.get(id=id)
     form = ImageForm
@@ -491,94 +431,74 @@ def user_add_image(request, id):
                'place': place,
                'wishlist': wishlist,
                'wishlistcount': wishlistcount,
-               'wishlist1': wishlist1
+               'wishlist1': wishlist,
+               'faqs':faqs,
                }
     return render(request, 'user_add_image.html', context)
 
 
 @login_required(login_url='/login')
 def user_delete_image(request, place_id, image_id):
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
-        setting = SettingLang.objects.filter(lang=current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
     image = Images.objects.filter(id=image_id, place_id=place_id).delete()
     messages.success(request, 'image is deleted')
-    return HttpResponseRedirect("/user/add_image/"+image.place_id)
+    return HttpResponseRedirect(reverse('user_add_image',args=(place_id,)))
 
 
 def logoutF(request):
     logout(request)
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
-        setting = SettingLang.objects.filter(lang=current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
         url='/'+current_language
-    url='/'+default_language
+    url='/'
     return HttpResponseRedirect(url)
 
 
 @login_required(login_url='/login')
 def user_messages(request):
-    curr_user = request.user
-    wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
-    wishlistcount = wishlist.count()
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
-    category=categoryTree(0,'',default_language)
+    setting = Setting.objects.get(pk=1)
+    category = categoryTree(0, '', default_language)
+    wishlist = wishist.objects.filter(user_id=request.user.id)
+    wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        category=categoryTree(0,'',current_language)
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
     messages = ContactMessage.objects.filter(email=curr_user.email)
     context = {
         'category': category,
         'messages': messages,
         'wishlist': wishlist,
         'wishlistcount': wishlistcount,
-        'wishlist1': wishlist1
+        'wishlist1': wishlist,
+        'faqs':faqs,
     }
     return render(request, 'user_messages.html', context)
 
 
 @login_required(login_url='/login')
 def likeplace(request, id):
-    url = request.META.get('HTTP_REFERER')
-    default_language = settings.LANGUAGE_CODE[0:2]
-    current_language = request.LANGUAGE_CODE[0:2]
     if request.method == 'POST':
         if wishist.objects.filter(user_id=request.user.id,place_id=id):
             wishist.objects.filter(user_id=request.user.id, place_id=id).delete()
@@ -588,20 +508,17 @@ def likeplace(request, id):
             data.user_id = request.user.id
             data.isLike = not (data.isLike)
             data.save()
-    wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
-    wishlistcount = wishlist.count()
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
+    category = categoryTree(0, '', default_language)
+    wishlist = wishist.objects.filter(user_id=request.user.id)
+    wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
         return HttpResponseRedirect('/'+current_language)
     return HttpResponseRedirect('/')
 
@@ -611,46 +528,38 @@ def likeplace(request, id):
 def user_add_place_multilang(request, id):
     if request.method == 'POST':
         url = request.META.get('HTTP_REFERER')
-        form1 = PlaceLangForm(request.POST)
-        if form1.is_valid():
+        form = PlaceLangForm(request.POST)
+        if form.is_valid():
             data = PlaceLanguage()
-            data.title = form1.cleaned_data['title']
-            data.lang = form1.cleaned_data['lang']
+            data.title = form.cleaned_data['title']
+            data.lang = form.cleaned_data['lang']
             data.slug = slugify(form.cleaned_data['title'])
-            data.keyword = form1.cleaned_data['keyword']
-            data.description = form1.cleaned_data['description']
-            data.detail = form1.cleaned_data['detail']
+            data.keyword = form.cleaned_data['keyword']
+            data.description = form.cleaned_data['description']
+            data.detail = form.cleaned_data['detail']
             data.place_id = id
-            if (data.title and data.lang):
-                data.save()
-            messages.success(request, 'Your item has been successfully inserted.Thanks!')
-            return HttpResponseRedirect(url)
+            data.save()
+            #messages.success(request, 'Your item has been successfully inserted.Thanks!')
+            # return HttpResponseRedirect(data)
+            return HttpResponseRedirect(reverse('user_add_place_multilang',args=(id,)))
 
-    setting = Setting.objects.all()
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
-        setting = SettingLang.objects.filter(lang=current_language)
-    form1 = PlaceLangForm
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
+
+    form = PlaceLangForm
     place = Place.objects.get(pk=id)
     places = PlaceLanguage.objects.filter(place_id=id)
     langcount = Language.objects.all().count() - 1
     placecount = places.count()
     context = {'category': category,
-               'form1': form1,
+               'form': form,
                'setting': setting,
                'place': place,
                'places': places,
@@ -658,7 +567,8 @@ def user_add_place_multilang(request, id):
                'placecount': placecount,
                'wishlist': wishlist,
                'wishlistcount': wishlistcount,
-               'wishlist1': wishlist1
+               'wishlist1': wishlist,
+               'faqs':faqs,
                }
 
     return render(request, 'user_add_place_multi.html', context)
@@ -666,23 +576,16 @@ def user_add_place_multilang(request, id):
 
 @login_required(login_url='/login')
 def user_update_multilang_place(request, place_id, id):
+
     default_language = settings.LANGUAGE_CODE[0:2]
     current_language = request.LANGUAGE_CODE[0:2]
+    setting = Setting.objects.get(pk=1)
     category = categoryTree(0, '', default_language)
     wishlist = wishist.objects.filter(user_id=request.user.id)
-    wishlist1 = wishist.objects.filter(user_id=request.user.id)
     wishlistcount = wishlist.count()
+    faqs=Faq.objects.filter(status=True).order_by('ordered')
     if default_language != current_language:
-        wishlist = Place.objects.raw(
-            'SELECT p.id,l.title,l.keyword,l.description,l.slug,p.image,p.city,p.country,p.location'
-            ' FROM home_wishist as w'
-            ' JOIN place_place as p'
-            ' ON w.place_id=p.id'
-            ' JOIN place_placelanguage as l'
-            ' ON p.id=l.place_id'
-            ' WHERE l.lang=%s and w.user_id=%s', [current_language, request.user.id])
-        category = categoryTree(0, '', current_language)
-        setting = SettingLang.objects.filter(lang=current_language)
+        wishlist, setting, category, faqs = wishlist_setting_category_Faq(request)
     if request.method == 'POST':
         place = PlaceLanguage.objects.get(place_id=place_id, id=id)
         user_form = PlaceLangUpdateForm(request.POST, instance=place)
@@ -690,9 +593,9 @@ def user_update_multilang_place(request, place_id, id):
         if user_form.is_valid():
             user_form.save()
             messages.success(request, 'Your item has been succesfully updated')
-            url = "/user/add_place_multilang/"
-            url += str(place_id)
-            return HttpResponseRedirect(url)
+            #url = "/user/add_place_multilang/"
+            #url += str(place_id)
+            return HttpResponseRedirect(reverse('user_add_place_multilang', args=(place_id,)))
     else:
         place = PlaceLanguage.objects.get(id=id, place_id=place_id)
         user_form = PlaceLangUpdateForm(instance=place)
@@ -702,6 +605,7 @@ def user_update_multilang_place(request, place_id, id):
             'user_form': user_form,
             'wishlist': wishlist,
             'wishlistcount': wishlistcount,
-            'wishlist1': wishlist1
+            'wishlist1': wishlist,
+            'faqs':faqs,
         }
         return render(request, 'user_update_multiLang_place.html', context)

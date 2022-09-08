@@ -48,11 +48,11 @@
                                         <div class="product-body">
                                             <h3 class="product-price"><small style="text-transform: capitalize">{{ lp.user.username }}</small></h3>
                                             <div class="product-rating">
-                                                <i class="fa fa-star{% if lp.averageReview < 1 %}-o empty{% endif %}"></i>
-                                                <i class="fa fa-star{% if lp.averageReview < 2 %}-o empty{% endif %}"></i>
-                                                <i class="fa fa-star{% if lp.averageReview < 3 %}-o empty{% endif %}"></i>
-                                                <i class="fa fa-star{% if lp.averageReview < 4 %}-o empty{% endif %}"></i>
-                                                <i class="fa fa-star{% if lp.averageReview < 5 %}-o empty{% endif %}"></i>
+                                                  <i class="fa fa-star{% if lp.averageReview < 1 and lp.averageReview >= 0.5 %}-half{% elif lp.averageReview < 0.5 %}-o empty{% endif %}" ></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 2 and lp.averageReview >= 1.5 %}-half{% elif lp.averageReview < 1.5 %}-o empty{% endif %}" ></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 3 and lp.averageReview >= 2.5 %}-half{% elif lp.averageReview < 2.5 %}-o empty{% endif %}" ></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 4 and lp.averageReview >= 3.5 %}-half{% elif lp.averageReview < 3.5 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 5 and lp.averageReview >= 4.5 %}-half{% elif lp.averageReview < 4.5 %}-o empty{% endif %}"></i>
                                                 ({{ lp.countReview  }})
                                             </div>
                                             <h2 class="product-name"><a href="#">{{ lp.title }}</a></h2>
@@ -132,23 +132,22 @@
                                         <div class="product-body">
                                             <h3 class="product-price"><small style="text-transform: capitalize">{{ lp.user.username }}</small></h3>
                                             <div class="product-rating">
-                                                <i class="fa fa-star{% if lp.averageReview < 1 %}-o empty{% endif %}"></i>
-                                                <i class="fa fa-star{% if lp.averageReview < 2 %}-o empty{% endif %}"></i>
-                                                <i class="fa fa-star{% if lp.averageReview < 3 %}-o empty{% endif %}"></i>
-                                                <i class="fa fa-star{% if lp.averageReview < 4 %}-o empty{% endif %}"></i>
-                                                <i class="fa fa-star{% if lp.averageReview < 5 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 1 and lp.averageReview >= 0.5 %}-half{% elif lp.averageReview < 0.5 %}-o empty{% endif %}" ></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 2 and lp.averageReview >= 1.5 %}-half{% elif lp.averageReview < 1.5 %}-o empty{% endif %}" ></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 3 and lp.averageReview >= 2.5 %}-half{% elif lp.averageReview < 2.5 %}-o empty{% endif %}" ></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 4 and lp.averageReview >= 3.5 %}-half{% elif lp.averageReview < 3.5 %}-o empty{% endif %}"></i>
+                                                <i class="fa fa-star{% if lp.averageReview < 5 and lp.averageReview >= 4.5 %}-half{% elif lp.averageReview < 4.5 %}-o empty{% endif %}"></i>
                                                 ({{ lp.countReview  }})
                                             </div>
                                             <h2 class="product-name"><a href="#">{{ lp.title }}</a></h2>
 
                                             <div class="product-btns text-right ">
+                                                <span class="" >{{ lp.city }}</span>
                                                 {% if user.is_authenticated %}
                                                     <form method="post" action="{% url  'likeplace' id=lp.id %}" class="text-right">
                                                         {% csrf_token %}
-
                                                         <input type="hidden" name="place-id" value="{{ lp.id }}">
                                                         {{ lp.countLike  }}&nbsp;&nbsp;<button class="main-btn icon-btn "><i class="fa fa-heart"{% for w in wishlist1 %} {% if request.user.id == w.user_id and w.place_id == lp.id %} style="color:orangered" {% endif %}{% endfor %}></i></button>
-
                                                     </form>
                                                 {% else %}
                                                     {{ lp.countLike  }}&nbsp;&nbsp;<button class="main-btn icon-btn "><i class="fa fa-heart" style="color:orangered"></i></button>

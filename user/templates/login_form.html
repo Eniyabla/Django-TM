@@ -1,12 +1,12 @@
 {% extends 'masterpage.html' %}
 {% load i18n %}
 {% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
-{% block title %}TURMEK |{% trans ' User login Form' %}{% endblock %}
+{% block title %}TU-RMEK |{% trans "Formulaire de connexion" %}{% endblock %}
 {% block content %}
     <div id="breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="/">{% trans 'Home' %}</a></li>
+                <li><a href="{% url 'home_page' %}">{% trans 'Accueil' %}</a></li>
                 <li class="active">{% trans 'Login' %}</li>
             </ul>
         </div>
@@ -19,18 +19,18 @@
                 <div class="col-md-1"></div>
                 <div class="shiping-methods col-md-10">
                     <div class="section-title">
-                        <h3 class="title">{% trans 'Login Form' %} </h3>
+                        <h3 class="title">{% trans 'Connexion' %} </h3>
                     </div>
                     <form id="chekout-form" class="clearfix" method="post">
                         {% csrf_token %}
                         <div class="form-group">
-                            <input class="input" type="text" placeholder="{% trans 'Enter your Username...' %}" name="username">
+                            <input class="input" type="text" placeholder="{% trans "Entrez votre nom d'utilisateur..." %}" name="username">
                         </div>
                         <div class="form-group">
-                            <input class="input" type="password" placeholder="{% trans 'Enter your Password...' %}" name="password">
+                            <input class="input" type="password" placeholder="{% trans "Entrez votre mot de passe.." %}" name="password">
                         </div>
                         <div class="form-group">
-                            <button class="primary-btn" type="submit">{% trans 'Login' %} </button>
+                            <button class="primary-btn" type="submit">{% trans "Se connecter" %} </button>
                         </div>
                     </form>
 

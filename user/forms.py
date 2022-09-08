@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
-from django.forms import TextInput, FileInput
+from django.forms import TextInput, FileInput, Textarea
 
 from place.models import Place, PlaceLanguage
 from user.models import UserProfile
@@ -16,6 +16,14 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
+        widgets = {
+            'username': TextInput(attrs={'class': 'input', 'placeholder': 'username'}),
+            'email': TextInput(attrs={'class': 'input', 'placeholder': 'Email'}),
+            'first_name': TextInput(attrs={'class': 'input', 'placeholder': 'First Name'}),
+            'last_name': TextInput(attrs={'class': 'input', 'placeholder': 'Last Name'}),
+            'password1': TextInput(attrs={'class': 'input', 'placeholder': 'password1'}),
+            'password2': TextInput(attrs={'class': 'input', 'placeholder': 'password2'}),
+        }
 
 class UserUpdateForm(UserChangeForm):
     class Meta:
@@ -51,4 +59,14 @@ class PlaceUpdateForm(forms.ModelForm):
             'city': TextInput(attrs={'class': 'input', 'placeholder': 'City'}),
             'location': TextInput(attrs={'class': 'input', 'placeholder': 'location'}),
             'country': TextInput(attrs={'class': 'input', 'placeholder': 'Country'}),
+        }
+class PlaceLangUpdateForm(forms.ModelForm):
+    class Meta:
+        model=PlaceLanguage()
+        fields = ['lang','title', 'keyword', 'description', 'detail',]
+        widgets = {
+            'title': TextInput(attrs={'class': 'input', 'placeholder': 'Title'}),
+            'keyword': TextInput(attrs={'class': 'input', 'placeholder': 'keyword'}),
+            'description': TextInput(attrs={'class': 'input', 'placeholder': 'Your description'}),
+            'detail': Textarea(attrs={'class': 'input', 'placeholder': 'detail'}),
         }

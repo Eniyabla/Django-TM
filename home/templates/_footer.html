@@ -12,17 +12,17 @@
                     <div class="footer-logo">
                         <a class="logo" href="{%  url 'home_page' %}">
                             {% load static %}
-                            <h1><span style="color: red">TUR</span> MEK</h1>
+                            <h1 style="color:white"><span style="color: red">TUR</span> MEK</h1>
                         </a>
                     </div>
                     <!-- /footer logo -->
                     <!-- footer social -->
                     <ul class="footer-social">
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                        {% if setting.facebook %}<li><a href="{{ setting.facebook }}" style="color:white" target="_blank"><i class="fa fa-facebook"></i></a></li>{% endif %}
+                        {% if setting.twitter %} <li><a href="{{ setting.twitter }}" style="color:white" target="_blank"><i class="fa fa-twitter"></i></a></li>{% endif %}
+                        {% if setting.instagram %} <li><a href="{{ setting.instagram }}" style="color:white" target="_blank"><i class="fa fa-instagram"></i></a></li>{% endif %}
+                        {% if setting.linkedin %} <li><a href="{{ setting.linkedin }}" style="color:white" target="_blank"><i class="fa fa-linkedin"></i></a></li>{% endif %}
+                        {% if setting.youtube %} <li><a href="{{ setting.youtube }}" style="color:white" target="_blank"><i class="fa fa-youtube"></i></a></li>{% endif %}
                     </ul>
                     <!-- /footer social -->
                 </div>
@@ -32,10 +32,17 @@
             <!-- footer widget -->
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="footer">
-                    <h3 class="footer-header">{% trans 'Mon Compte' %}</h3>
+                    <h3 class="footer-header" style="color:white">{% trans 'Mon Compte' %}</h3>
                     <ul class="list-links" style="color: white">
                         {% if request.user.id is not None %}
-                            {% include 'user_panel.html' %}
+                            {% load i18n %}
+                            <li><a href="{% url 'user_index' %}" style="color: white"><i class="fa fa-user-o"></i> {% trans  "Mon compte" %}</a></li>
+                            <li><a href="{% url 'user_wishlist' %}"  style="color: white"><i class="fa fa-heart-o"></i> {% trans 'Liste de souhaits' %}</a></li>
+                            <li><a href="{% url 'user_places' %}" style="color: white"><i class="fa fa-product-hunt"></i> {% trans "Mes Produuits" %}</a></li>
+                            <li><a href="{% url 'user_comments' %}" style="color: white"><i class="fa fa-comments-o"></i> {% trans "Mes Commentaires" %}</a></li>
+                            <li><a href="{% url 'user_messages' %}" style="color: white"><i class="fa fa-comments-o"></i> {% trans "Mes Messages" %}</a></li>
+                            <li><a href="{% url 'logoutF' %}" style="color: white"><i class="fa fa-unlock"></i> {% trans "Deconnecter" %}</a></li>
+
                         {% endif %}
                     </ul>
                 </div>
@@ -47,13 +54,13 @@
             <!-- footer widget -->
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="footer">
-                    <h3 class="footer-header">{% trans "service de l'utilisateur" %}</h3>
-                    <ul class="list-links">
-                        <li><a href="{%  url 'home_page' %}">{% trans "Accueil" %}</a></li>
-                        <li><a href="{% url 'aboutus' %}">{% trans "Apropos de nous" %}</a></li>
-                        <li><a href="{% url 'contactus' %}">{% trans "Contacter nous" %}</a></li>
-                        <li><a href="{% url 'references' %}"> {% trans "References" %}</a></li>
-                        <li><a href="{% url 'faq' %}">{% trans 'QUESTIONS FRÉQUEMMENT POSÉES' %}</a></li>
+                    <h3 class="footer-header" style="color:white">{% trans "service de l'utilisateur" %}</h3>
+                    <ul class="list-links" style="color:white">
+                        <li><a href="{%  url 'home_page' %}" style="color:white">{% trans "Accueil" %}</a></li>
+                        <li><a href="{% url 'aboutus' %}" style="color:white">{% trans "Apropos de nous" %}</a></li>
+                        <li><a href="{% url 'contactus' %}" style="color:white">{% trans "Contacter nous" %}</a></li>
+                        <li><a href="{% url 'references' %}" style="color:white"> {% trans "References" %}</a></li>
+                        <li><a href="{% url 'faq' %}" style="color:white">{% trans 'Questions fréquemment posées' %}</a></li>
                     </ul>
                 </div>
             </div>
@@ -62,13 +69,13 @@
             <!-- footer subscribe -->
             <div class="col-md-3 col-sm-6 col-xs-6">
                 <div class="footer">
-                    <h3 class="footer-header">Coordonnées</h3>
-                    <p>Teléphone: {{ setting.phone }}</p>
-                    <p>Fax: {{ setting.fax }}</p>
-                    <p>E-mail: {{ setting.email }}</p>
+                    <h3 class="footer-header" style="color:white">{% trans 'Coordonnées' %}</h3>
+                    <p>{% trans 'Téléphone' %}: {{ setting.phone }}</p>
+                    <p>{% trans 'Fax' %}: {{ setting.fax }}</p>
+                    <p>{% trans 'E-mail' %}: {{ setting.email }}/</p>
                 </div>
             </div>
-            <!- /footer subscribe ->
+
         </div>
         <!-- /row -->
         <hr>
@@ -77,7 +84,9 @@
             <div class="col-md-8 col-md-offset-2 text-center">
                 <!-- footer copyright -->
                 <div class="footer-copyright">
-                    Copyright &copy; 2022 All rights reserved | Developed by <i class="fa fa-heart-o" aria-hidden="true"></i>  <a href="https://github.com/Eniyabla/Django-TM" target="_blank" style="color: orangered">Abdelbari</a>
+                    {% trans 'Copyright &copy; 2022 All rights reserved | Developed by' %}
+                    <i class="fa fa-heart-o" aria-hidden="true"></i>
+                    <a href="https://github.com/Eniyabla/Django-TM" target="_blank" style="color: orangered">Abdelbari</a>
 
                 </div>
             </div>

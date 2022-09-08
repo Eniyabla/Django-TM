@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.static import serve
 
 admin.site.site_header = "TURMEK ADMIN PANEL"
 admin.site.title = "TURMEK | ADMIN PANEL"
@@ -45,13 +46,17 @@ urlpatterns += i18n_patterns(
     path(_('références/'), views.references, name='references'),
     path(_('produit/'), include('place.urls')),
     path(_('rechercer/'), views.search, name='search'),
-    path('produit/<int:id>/<slug:slug>', views.place_detail, name='place_detail'),
-    path('categorie/<int:id>/<slug:slug>', views.category_places, name='category_places'),
+    path(_('produit/<int:id>/<slug:slug>'), views.place_detail, name='place_detail'),
+    path(_('categorie/<int:id>/<slug:slug>'), views.category_places, name='category_places'),
 
-    path('login/', userViews.loginForm, name='loginForm'),
-    path('register/', userViews.signUpForm, name='signUpForm'),
-    path('logout/', userViews.logoutF, name='logoutF'),
+    path(_('login/'), userViews.loginForm, name='loginForm'),
+    path(_('register/'), userViews.signUpForm, name='signUpForm'),
+    path(_('logout/'), userViews.logoutF, name='logoutF'),
 
     path('ckeditor/', include('ckeditor_uploader.urls')),
+
+
+    path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     prefix_default_language=False,
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

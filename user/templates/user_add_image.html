@@ -1,14 +1,14 @@
 {% extends 'masterpage.html' %}
 {% load i18n %}
 {% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
-{% block title %} TURMEK |{% trans 'User Add Image' %}  {% endblock %}
+{% block title %} TUR-MEK |{% trans "Ajouter une image au " %} {{ place.title }}  {% endblock %}
 {% block content %}
     <div id="breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="/">{% trans 'Home' %}</a></li>
-                <li><a href="{% url 'user_places' %}">{% trans 'User Places' %}</a></li>
-                <li class="active">{% trans 'Add image to :' %}{{ place.title }}</li>
+                <li><a href="{% url 'home_page' %}">{% trans 'Accueil' %}</a></li>
+                <li><a href="{% url 'user_places' %}">{% trans "produit de l'utilisateur" %}</a></li>
+                <li class="active">{% trans "Ajouter une image au" %} {{ place.title }}</li>
             </ul>
         </div>
     </div>
@@ -20,7 +20,7 @@
 
                 <div class=" col-md-3">
                     <div class="section-title">
-                        <h3 class="title">{% trans 'User Panel' %}</h3>
+                        <h3 class="title">{% trans "Panneau de l'utilisateur" %}</h3>
                     </div>
                     <div class="aside">
                         <ul class="list-links">
@@ -29,12 +29,12 @@
                     </div>                </div>
                 <div class="col-md-9">
                     <div class="section-title">
-                        <h3 class="title">{% trans 'Add Image to :' %} {{ place.title }}</h3>
+                        <h3 class="title">{% trans "Ajouter une image au" %} {{ place.title }}</h3>
                     </div>
                     <table class="shopping-cart-table table">
 
                         <tr class="text-center">
-                            <th>{% trans 'Title' %}</th>
+                            <th>{% trans 'Titre' %}</th>
                             <th>{% trans 'Image' %}</th>
                             <th>{% trans 'Actions' %}</th>
                         </tr>
@@ -43,7 +43,7 @@
                                 <tr class="text-center">
                                     <th>{{ im.title }}</th>
                                     <th><img src="{{ im.image.url }}" height="50px" width="50px"/></th>
-                                    <!--th><a href="/user/delete_image/{{ place.id }}/{{ im.id }}"><button class="primary-btn" type="submit">Delete Image</button></a></th-->
+                                    <th><a href="{% url 'user_delete_image' place_id=place.id image_id=im.id %}"><button class="primary-btn" type="submit">Supprimer l'image</button></a></th>
                                 </tr>
                             {% endfor %}
                         {% endif %}
@@ -52,7 +52,7 @@
                     <form id="chekout-form" class="clearfix" method="post"  enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="primary-btn">{% trans 'Add' %}</button>
+                        <button type="submit" class="primary-btn">{% trans 'Ajouter' %}</button>
                     </form>
                 </div>
             </div>

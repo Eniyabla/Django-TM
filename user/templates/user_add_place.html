@@ -1,14 +1,14 @@
 {% extends 'masterpage.html' %}
 {% load i18n %}
 {% block sidebar %}{% include '_sidebar.html' %}{% endblock %}
-{% block title %} TURMEK | {% trans 'User Add Place' %}{% endblock %}
+{% block title %} TUR-MEK | {% trans "Ajout d'un produit pour l'utilisateur" %}{% endblock %}
 {% block content %}
     <div id="breadcrumb">
         <div class="container">
             <ul class="breadcrumb">
-                <li><a href="/">{% trans 'Home' %}</a></li>
-                <li><a href="{% url 'user_places' %}">{% trans 'User Places' %}</a></li>
-                <li class="active">{% trans 'User Add Place' %}</li>
+                <li><a href="{% url 'home_page' %}">{% trans 'Accueil' %}</a></li>
+                <li><a href="{% url 'user_places' %}">{% trans "Produit de l'utilisateur" %}</a></li>
+                <li class="active">{% trans "Ajout d'un lieu pour l'utilisateur" %}</li>
             </ul>
         </div>
     </div>
@@ -20,7 +20,7 @@
 
                 <div class=" col-md-3">
                     <div class="section-title">
-                        <h3 class="title">{% trans 'User Panel' %}</h3>
+                        <h3 class="title">{% trans "Panneau de l'utilisateur" %}</h3>
                     </div>
                     <div class="aside">
                         <ul class="list-links">
@@ -30,12 +30,12 @@
                 </div>
                 <div class="col-md-9">
                     <div class="section-title">
-                        <h3 class="title">{% trans 'User Add Place' %}</h3>
+                        <h3 class="title">{% trans "Ajout d'un lieu pour l'utilisateur" %}</h3>
                     </div>
                     <form id="chekout-form" class="clearfix" method="post"  enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.as_p }}
-                        <button type="submit" class="primary-btn">{% trans 'Add Place' %}</button>
+                        <button type="submit" class="primary-btn">{% trans 'Ajouter le produit' %}</button>
                     </form>
                 </div>
             </div>
