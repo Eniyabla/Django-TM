@@ -66,7 +66,7 @@ def loginForm(request):
             return HttpResponseRedirect('/')
         else:
             messages.warning(request, 'Wrong username or password, try again')
-            return HttpResponseRedirect(reverse('loginF'))
+            return HttpResponseRedirect("login")
     context = {
         'setting': setting,
         'category': category,
